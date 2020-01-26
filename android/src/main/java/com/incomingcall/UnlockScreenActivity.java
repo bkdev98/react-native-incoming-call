@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -82,7 +83,7 @@ public class UnlockScreenActivity extends AppCompatActivity implements UnlockScr
                 | WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED | WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
 
         AnimateImage acceptCallBtn = findViewById(R.id.ivAcceptCall);
-         acceptCallBtn.setOnClickListener({
+         acceptCallBtn.setOnClickListener(new View.OnClickListener() {
              try {
                  acceptDialing();
              } catch (Exception e) {
@@ -91,7 +92,7 @@ public class UnlockScreenActivity extends AppCompatActivity implements UnlockScr
          });
 
         AnimateImage rejectCallBtn = findViewById(R.id.ivDeclineCall);
-         rejectCallBtn.setOnClickListener({
+         rejectCallBtn.setOnClickListener(new View.OnClickListener() {
              dismissDialing();
          });
     }
