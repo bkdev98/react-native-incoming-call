@@ -26,14 +26,14 @@
             android:textColor="#ffffff"
             />
 
-        <!-- <ImageView
+        <ImageView
             android:id="@+id/ivAvatar"
             android:layout_width="150dp"
             android:layout_height="150dp"
             android:scaleType="fitXY"
             android:layout_marginTop="15dp"
             android:src="@drawable/ic_avatar_default"
-            /> -->
+            />
 
         <TextView
             android:id="@+id/tvName"
@@ -64,7 +64,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="50dp"
         >
-<!--
+
         <com.reactlibrary.AnimateImage
             android:id="@+id/ivAcceptCall"
             android:layout_width="60dp"
@@ -80,6 +80,6 @@
             android:layout_height="60dp"
             android:scaleType="centerInside"
             android:src="@drawable/ic_decline_call"
-            /> -->
+            />
     </LinearLayout>
 </RelativeLayout>
