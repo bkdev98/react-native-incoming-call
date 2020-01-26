@@ -79,23 +79,23 @@ public class UnlockScreenActivity extends AppCompatActivity implements UnlockScr
                 | WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED | WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
 
         AnimateImage acceptCallBtn = findViewById(R.id.ivAcceptCall);
-        acceptCallBtn.setOnClickListener(view -> {
-           if (reactContext != null) {
-                try {
-                    acceptDialing();
-                } catch (Exception e) {
-                    // It should be better if you dismiss dialing anywhere you got any exception. Help us avoid some stuff of time
-                    dismissDialing();
-                }
-           }
-        });
+        // acceptCallBtn.setOnClickListener(view -> {
+        //    if (reactContext != null) {
+        //         try {
+        //             acceptDialing();
+        //         } catch (Exception e) {
+        //             // It should be better if you dismiss dialing anywhere you got any exception. Help us avoid some stuff of time
+        //             dismissDialing();
+        //         }
+        //    }
+        // });
 
         AnimateImage rejectCallBtn = findViewById(R.id.ivDeclineCall);
-        rejectCallBtn.setOnClickListener(view -> {
-           if (reactContext != null) {
-                dismissDialing();
-           }
-        });
+        // rejectCallBtn.setOnClickListener(view -> {
+        //    if (reactContext != null) {
+        //         dismissDialing();
+        //    }
+        // });
     }
 
     @Override
