@@ -24,4 +24,34 @@ public class IncomingCallModule extends ReactContextBaseJavaModule {
         // TODO: Implement some actually useful functionality
         callback.invoke("Received numberArgument: " + numberArgument + " stringArgument: " + stringArgument);
     }
+
+    @ReactMethod
+    public void display(String uuid, String displayName, String body, String avatar) {
+        if (UnlockScreenActivity.active) {
+            return;
+        }
+        if (reactContext != null) {
+            Bundle bundle = new Bundle();
+            bundle.putString("uuid", uuid);
+            bundle.putString("displayName", displayName);
+            bundle.putString("body", body);
+            bundle.putString("avatar", avatar);
+            Intent i = new Intent(reactContext, UnlockScreenActivity.class);
+            i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+            i.putExtras(bundle);
+            reactContext.startActivity(i);
+        }
+    }
+
+    @ReactMethod
+    public void dismiss() {
+        final Activity activity = reactContext.getCurrentActivity();
+
+        // if (MainActivity.active) {
+        //     Intent i = new Intent(reactContext, MainActivity.class);
+        //     i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        //     reactContext.getApplicationContext().startActivity(i);
+        // }
+        assert activity != null;
+    }
 }

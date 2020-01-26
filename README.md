@@ -26,7 +26,7 @@ import {useEffect} from 'react';
 import IncomingCall from 'react-native-incoming-call';
 
 // Display incoming call activity. Should be called in backgroundHandler function of react-native-firebase.
-IncomingCall.display(payload);
+IncomingCall.display(uuid, displayName, body, avatar);
 
 // Dismiss current activity. Should be called when call ended.
 IncomingCall.dismiss();
