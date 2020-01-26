@@ -1,4 +1,4 @@
-package com.reactlibrary;
+package com.incomingcall;
 
 import android.content.Intent;
 import android.os.Bundle;

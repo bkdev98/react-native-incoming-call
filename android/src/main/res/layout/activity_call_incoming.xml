@@ -65,7 +65,7 @@
         android:layout_marginBottom="50dp"
         >
 
-        <com.reactlibrary.AnimateImage
+        <com.incomingcall.AnimateImage
             android:id="@+id/ivAcceptCall"
             android:layout_width="60dp"
             android:layout_height="60dp"
@@ -74,7 +74,7 @@
             android:layout_marginEnd="150dp"
             />
 
-        <com.reactlibrary.AnimateImage
+        <com.incomingcall.AnimateImage
             android:id="@+id/ivDeclineCall"
             android:layout_width="60dp"
             android:layout_height="60dp"
