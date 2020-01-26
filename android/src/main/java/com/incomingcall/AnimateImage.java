@@ -26,10 +26,10 @@ public class AnimateImage extends AppCompatImageView {
         super(context, attrs, defStyleAttr);
     }
 
-    @Override
-    public void setOnClickListener(View.OnClickListener l) {
-        super.setOnClickListener(getItemClickListener(l));
-    }
+    // @Override
+    // public void setOnClickListener(View.OnClickListener l) {
+    //     super.setOnClickListener(getItemClickListener(l));
+    // }
 
     private View.OnClickListener getItemClickListener(final View.OnClickListener listener) {
         return new View.OnClickListener() {

@@ -83,18 +83,24 @@ public class UnlockScreenActivity extends AppCompatActivity implements UnlockScr
                 | WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED | WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
 
         AnimateImage acceptCallBtn = findViewById(R.id.ivAcceptCall);
-         acceptCallBtn.setOnClickListener(new View.OnClickListener() {
-             try {
-                 acceptDialing();
-             } catch (Exception e) {
-                 dismissDialing();
-             }
-         });
+        acceptCallBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                try {
+                    acceptDialing();
+                } catch (Exception e) {
+                    dismissDialing();
+                }
+            }
+        });
 
         AnimateImage rejectCallBtn = findViewById(R.id.ivDeclineCall);
-         rejectCallBtn.setOnClickListener(new View.OnClickListener() {
-             dismissDialing();
-         });
+        rejectCallBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dismissDialing();
+            }
+        });
     }
 
     @Override
