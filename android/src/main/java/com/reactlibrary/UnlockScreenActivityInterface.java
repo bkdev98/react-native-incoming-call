@@ -1,3 +1,5 @@
+package com.reactlibrary;
+
 import com.facebook.react.bridge.ReadableMap;
 
 public interface UnlockScreenActivityInterface {
