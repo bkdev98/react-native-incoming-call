@@ -20,13 +20,12 @@ import com.facebook.react.modules.core.DeviceEventManagerModule;
 
 public class UnlockScreenActivity extends AppCompatActivity implements UnlockScreenActivityInterface {
 
-    // private final ReactApplicationContext reactContext;
-
     private static final String TAG = "MessagingService";
     private TextView tvBody;
     private TextView tvName;
     private ImageView ivAvatar;
     private String uuid = "";
+    private String packageName = "";
     static boolean active = false;
 
     @Override
@@ -61,6 +60,10 @@ public class UnlockScreenActivity extends AppCompatActivity implements UnlockScr
                 String displayName = bundle.getString("displayName");
                 tvName.setText(displayName);
             }
+            if (bundle.containsKey("packageName")) {
+                String packageName = bundle.getString("packageName");
+                tvName.setText(packageName);
+            }
             if (bundle.containsKey("avatar")) {
                 String avatar = bundle.getString("avatar");
                 // Glide.with(this)
@@ -79,23 +82,18 @@ public class UnlockScreenActivity extends AppCompatActivity implements UnlockScr
                 | WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED | WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
 
         AnimateImage acceptCallBtn = findViewById(R.id.ivAcceptCall);
-        // acceptCallBtn.setOnClickListener(view -> {
-        //    if (reactContext != null) {
-        //         try {
-        //             acceptDialing();
-        //         } catch (Exception e) {
-        //             // It should be better if you dismiss dialing anywhere you got any exception. Help us avoid some stuff of time
-        //             dismissDialing();
-        //         }
-        //    }
-        // });
+         acceptCallBtn.setOnClickListener({
+             try {
+                 acceptDialing();
+             } catch (Exception e) {
+                 dismissDialing();
+             }
+         });
 
         AnimateImage rejectCallBtn = findViewById(R.id.ivDeclineCall);
-        // rejectCallBtn.setOnClickListener(view -> {
-        //    if (reactContext != null) {
-        //         dismissDialing();
-        //    }
-        // });
+         rejectCallBtn.setOnClickListener({
+             dismissDialing();
+         });
     }
 
     @Override
@@ -106,16 +104,16 @@ public class UnlockScreenActivity extends AppCompatActivity implements UnlockScr
     static final int STATIC_RESULT = 69;
 
     private void acceptDialing() {
-        // Intent i = new Intent(this, MainActivity.class);
-        // i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        // i.putExtra("uuid", uuid);
-        // startActivityForResult(i, STATIC_RESULT);
+        Intent i = IncomingCallModule.reactContext.getPackageManager().getLaunchIntentForPackage(packageName);
+        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        i.putExtra("uuid", uuid);
+        startActivityForResult(i, STATIC_RESULT);
 
-        // WritableMap params = Arguments.createMap();
-        // params.putBoolean("done", true);
-        // params.putString("uuid", uuid);
-        // sendEvent("answerCall", params);
-        // finish();
+        WritableMap params = Arguments.createMap();
+        params.putBoolean("done", true);
+        params.putString("uuid", uuid);
+        sendEvent("answerCall", params);
+        finish();
     }
 
     private void dismissDialing() {
@@ -124,7 +122,6 @@ public class UnlockScreenActivity extends AppCompatActivity implements UnlockScr
         params.putString("uuid", uuid);
 
         sendEvent("endCall", params);
-//        finishActivity(123);
         finish();
     }
 
@@ -154,14 +151,11 @@ public class UnlockScreenActivity extends AppCompatActivity implements UnlockScr
     @Override
     public void onIncoming(ReadableMap params) {
         Log.d(TAG, "onIncoming: ");
-
     }
 
     private void sendEvent(String eventName, WritableMap params) {
-        // if (reactContext != null) {
-        //     reactContext
-        //             .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
-        //             .emit(eventName, params);
-        // }
+        IncomingCallModule.reactContext
+                .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
+                .emit(eventName, params);
     }
 }
