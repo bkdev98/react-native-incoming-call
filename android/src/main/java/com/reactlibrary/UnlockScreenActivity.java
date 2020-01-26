@@ -106,16 +106,16 @@ public class UnlockScreenActivity extends AppCompatActivity implements UnlockScr
     static final int STATIC_RESULT = 69;
 
     private void acceptDialing() {
-        Intent i = new Intent(this, MainActivity.class);
-        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        i.putExtra("uuid", uuid);
-        startActivityForResult(i, STATIC_RESULT);
+        // Intent i = new Intent(this, MainActivity.class);
+        // i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        // i.putExtra("uuid", uuid);
+        // startActivityForResult(i, STATIC_RESULT);
 
-        WritableMap params = Arguments.createMap();
-        params.putBoolean("done", true);
-        params.putString("uuid", uuid);
-        sendEvent("answerCall", params);
-        finish();
+        // WritableMap params = Arguments.createMap();
+        // params.putBoolean("done", true);
+        // params.putString("uuid", uuid);
+        // sendEvent("answerCall", params);
+        // finish();
     }
 
     private void dismissDialing() {
