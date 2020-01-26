@@ -20,7 +20,7 @@ import com.facebook.react.modules.core.DeviceEventManagerModule;
 
 public class UnlockScreenActivity extends AppCompatActivity implements UnlockScreenActivityInterface {
 
-    private final ReactApplicationContext reactContext;
+    // private final ReactApplicationContext reactContext;
 
     private static final String TAG = "MessagingService";
     private TextView tvBody;
@@ -51,29 +51,29 @@ public class UnlockScreenActivity extends AppCompatActivity implements UnlockScr
         tvName = findViewById(R.id.tvName);
         ivAvatar = findViewById(R.id.ivAvatar);
 
-        // Bundle bundle = getIntent().getExtras();
-        // if (bundle != null) {
-        //     if (bundle.containsKey("body")) {
-        //         String body = bundle.getString("body");
-        //         tvBody.setText(body);
-        //     }
-        //     if (bundle.containsKey("displayName")) {
-        //         String displayName = bundle.getString("displayName");
-        //         tvName.setText(displayName);
-        //     }
-        //     if (bundle.containsKey("avatar")) {
-        //         String avatar = bundle.getString("avatar");
-        //         // Glide.with(this)
-        //         //         .load(avatar)
-        //         //         .centerCrop()
-        //         //         .placeholder(R.drawable.ic_avatar_default)
-        //         //         .apply(RequestOptions.circleCropTransform())
-        //         //         .into(ivAvatar);
-        //     }
-        //     if (bundle.containsKey("uuid")) {
-        //         uuid = bundle.getString("uuid");
-        //     }
-        // }
+        Bundle bundle = getIntent().getExtras();
+        if (bundle != null) {
+            if (bundle.containsKey("body")) {
+                String body = bundle.getString("body");
+                tvBody.setText(body);
+            }
+            if (bundle.containsKey("displayName")) {
+                String displayName = bundle.getString("displayName");
+                tvName.setText(displayName);
+            }
+            if (bundle.containsKey("avatar")) {
+                String avatar = bundle.getString("avatar");
+                // Glide.with(this)
+                //         .load(avatar)
+                //         .centerCrop()
+                //         .placeholder(R.drawable.ic_avatar_default)
+                //         .apply(RequestOptions.circleCropTransform())
+                //         .into(ivAvatar);
+            }
+            if (bundle.containsKey("uuid")) {
+                uuid = bundle.getString("uuid");
+            }
+        }
 
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN | WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON | WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON
                 | WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED | WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
@@ -106,26 +106,26 @@ public class UnlockScreenActivity extends AppCompatActivity implements UnlockScr
     static final int STATIC_RESULT = 69;
 
     private void acceptDialing() {
-        // Intent i = new Intent(this, MainActivity.class);
-        // i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        // i.putExtra("uuid", uuid);
-        // startActivityForResult(i, STATIC_RESULT);
+        Intent i = new Intent(this, MainActivity.class);
+        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        i.putExtra("uuid", uuid);
+        startActivityForResult(i, STATIC_RESULT);
 
-        // WritableMap params = Arguments.createMap();
-        // params.putBoolean("done", true);
-        // params.putString("uuid", uuid);
-        // sendEvent("answerCall", params);
-        // finish();
+        WritableMap params = Arguments.createMap();
+        params.putBoolean("done", true);
+        params.putString("uuid", uuid);
+        sendEvent("answerCall", params);
+        finish();
     }
 
     private void dismissDialing() {
-//         WritableMap params = Arguments.createMap();
-//         params.putBoolean("done", false);
-//         params.putString("uuid", uuid);
+        WritableMap params = Arguments.createMap();
+        params.putBoolean("done", false);
+        params.putString("uuid", uuid);
 
-//         sendEvent("endCall", params);
-// //        finishActivity(123);
-//         finish();
+        sendEvent("endCall", params);
+//        finishActivity(123);
+        finish();
     }
 
     @Override
@@ -158,10 +158,10 @@ public class UnlockScreenActivity extends AppCompatActivity implements UnlockScr
     }
 
     private void sendEvent(String eventName, WritableMap params) {
-        if (reactContext != null) {
-            reactContext
-                    .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
-                    .emit(eventName, params);
-        }
+        // if (reactContext != null) {
+        //     reactContext
+        //             .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
+        //             .emit(eventName, params);
+        // }
     }
 }
