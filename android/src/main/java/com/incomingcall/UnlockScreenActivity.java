@@ -106,6 +106,7 @@ public class UnlockScreenActivity extends AppCompatActivity implements UnlockScr
     }
 
     private void acceptDialing() {
+        // Intent i = new Intent(this, MainActivity.class);
         Intent i = IncomingCallModule.reactContext.getPackageManager().getLaunchIntentForPackage(packageName);
         if (i != null) {
             i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
