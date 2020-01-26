@@ -9,8 +9,8 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
+// import com.bumptech.glide.Glide;
+// import com.bumptech.glide.request.RequestOptions;
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.ReadableMap;
@@ -63,12 +63,12 @@ public class UnlockScreenActivity extends AppCompatActivity implements UnlockScr
             }
             if (bundle.containsKey("avatar")) {
                 String avatar = bundle.getString("avatar");
-                Glide.with(this)
-                        .load(avatar)
-                        .centerCrop()
-                        .placeholder(R.drawable.ic_avatar_default)
-                        .apply(RequestOptions.circleCropTransform())
-                        .into(ivAvatar);
+                // Glide.with(this)
+                //         .load(avatar)
+                //         .centerCrop()
+                //         .placeholder(R.drawable.ic_avatar_default)
+                //         .apply(RequestOptions.circleCropTransform())
+                //         .into(ivAvatar);
             }
             if (bundle.containsKey("uuid")) {
                 uuid = bundle.getString("uuid");

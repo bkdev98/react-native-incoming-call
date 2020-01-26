@@ -45,13 +45,13 @@ public class IncomingCallModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void dismiss() {
-        final Activity activity = reactContext.getCurrentActivity();
+        // final Activity activity = reactContext.getCurrentActivity();
 
         // if (MainActivity.active) {
         //     Intent i = new Intent(reactContext, MainActivity.class);
         //     i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         //     reactContext.getApplicationContext().startActivity(i);
         // }
-        assert activity != null;
+        // assert activity != null;
     }
 }
