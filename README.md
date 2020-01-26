@@ -16,6 +16,8 @@ or
 
 ### Addition installation step
 
+In `AndroidManifest.xml`, add `<activity android:name="com.reactlibrary.UnlockScreenActivity" />` line between `<application>` tag.
+
 For RN >= 0.60, it's done. Otherwise:
 
 `$ react-native link react-native-incoming-call`
