@@ -105,13 +105,11 @@ public class UnlockScreenActivity extends AppCompatActivity implements UnlockScr
         // Dont back
     }
 
-    static final int STATIC_RESULT = 69;
-
     private void acceptDialing() {
         Intent i = IncomingCallModule.reactContext.getPackageManager().getLaunchIntentForPackage(packageName);
-        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        i.putExtra("uuid", uuid);
-        startActivityForResult(i, STATIC_RESULT);
+        // i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        // i.putExtra("uuid", uuid);
+        IncomingCallModule.reactContext.startActivity(i);
 
         WritableMap params = Arguments.createMap();
         params.putBoolean("done", true);
