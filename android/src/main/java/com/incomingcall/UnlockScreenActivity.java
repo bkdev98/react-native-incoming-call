@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.view.View;
 import android.net.Uri;
+import android.content.Context;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -106,12 +107,14 @@ public class UnlockScreenActivity extends AppCompatActivity implements UnlockScr
     }
 
     private void acceptDialing() {
+        Context context = this;
+
         // Intent i = new Intent(this, MainActivity.class);
-        Intent i = IncomingCallModule.reactContext.getPackageManager().getLaunchIntentForPackage(packageName);
+        Intent i = context.getPackageManager().getLaunchIntentForPackage(packageName);
         if (i != null) {
             i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
             i.putExtra("uuid", uuid);
-            IncomingCallModule.reactContext.startActivity(i);
+            context.startActivity(i);
         } else {
             // No intent
             WritableMap params = Arguments.createMap();
