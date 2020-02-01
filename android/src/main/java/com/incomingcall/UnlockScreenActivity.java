@@ -8,7 +8,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.view.View;
 import android.net.Uri;
-import android.content.Context;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -26,7 +25,6 @@ public class UnlockScreenActivity extends AppCompatActivity implements UnlockScr
     private TextView tvName;
     private ImageView ivAvatar;
     private String uuid = "";
-    private String packageName = "";
     static boolean active = false;
 
     @Override
@@ -60,9 +58,6 @@ public class UnlockScreenActivity extends AppCompatActivity implements UnlockScr
             if (bundle.containsKey("displayName")) {
                 String displayName = bundle.getString("displayName");
                 tvName.setText(displayName);
-            }
-            if (bundle.containsKey("packageName")) {
-                String packageName = bundle.getString("packageName");
             }
             if (bundle.containsKey("avatar")) {
                 String avatar = bundle.getString("avatar");
@@ -107,14 +102,19 @@ public class UnlockScreenActivity extends AppCompatActivity implements UnlockScr
     }
 
     private void acceptDialing() {
-        Context context = this;
-
         // Intent i = new Intent(this, MainActivity.class);
-        Intent i = context.getPackageManager().getLaunchIntentForPackage(packageName);
+        String packageName = IncomingCallModule.reactContext.getPackageName();
+        String packageName2 = getPackageName();
+        WritableMap papa = Arguments.createMap();
+        papa.putString("packageName", packageName);
+        papa.putString("packageName2", packageName2);
+        sendEvent("packageName", papa);
+
+        Intent i = getPackageManager().getLaunchIntentForPackage(packageName);
         if (i != null) {
             i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
             i.putExtra("uuid", uuid);
-            context.startActivity(i);
+            startActivity(i);
         } else {
             // No intent
             WritableMap params = Arguments.createMap();
