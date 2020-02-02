@@ -3,6 +3,8 @@ package com.incomingcall;
 import android.content.Intent;
 import android.os.Bundle;
 import android.app.Activity;
+import android.view.WindowManager;
+
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
@@ -37,6 +39,10 @@ public class IncomingCallModule extends ReactContextBaseJavaModule {
             bundle.putString("avatar", avatar);
             Intent i = new Intent(reactContext, UnlockScreenActivity.class);
             i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+            i.addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED +
+            WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD +
+            WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
+            
             i.putExtras(bundle);
             reactContext.startActivity(i);
         }
