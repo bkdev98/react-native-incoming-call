@@ -103,24 +103,19 @@ public class UnlockScreenActivity extends AppCompatActivity implements UnlockScr
 
     private void acceptDialing() {
         // Intent i = new Intent(this, MainActivity.class);
-        String packageName = IncomingCallModule.reactContext.getPackageName();
-        String packageName2 = getPackageName();
-        WritableMap papa = Arguments.createMap();
-        papa.putString("packageName", packageName);
-        papa.putString("packageName2", packageName2);
-        sendEvent("packageName", papa);
+        String packageName = getPackageName();
 
-        Intent i = getPackageManager().getLaunchIntentForPackage(packageName);
-        if (i != null) {
-            i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-            i.putExtra("uuid", uuid);
-            startActivity(i);
-        } else {
-            // No intent
-            WritableMap params = Arguments.createMap();
-            params.putString("message", "No intent");
-            sendEvent("error", params);
-        }
+//         Intent i = getPackageManager().getLaunchIntentForPackage(packageName);
+//         if (i != null) {
+//             i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+//             i.putExtra("uuid", uuid);
+//             startActivity(i);
+//         } else {
+//             // No intent
+//             WritableMap params = Arguments.createMap();
+//             params.putString("message", "No intent");
+//             sendEvent("error", params);
+//         }
 
         WritableMap params = Arguments.createMap();
         params.putBoolean("done", true);
