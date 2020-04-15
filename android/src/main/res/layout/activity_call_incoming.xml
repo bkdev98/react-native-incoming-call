@@ -40,10 +40,11 @@
             android:id="@+id/tvName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:textSize="16sp"
+            android:layout_marginTop="20dp"
+            android:textSize="26sp"
             android:textStyle="bold"
-            android:textColor="#333333"
+            android:textColor="#FFFFFF"
+            android:fontFamily="SanFranciscoDisplay-Medium"
             />
 
         <TextView
