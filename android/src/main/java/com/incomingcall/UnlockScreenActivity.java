@@ -28,6 +28,9 @@ public class UnlockScreenActivity extends AppCompatActivity implements UnlockScr
     private ImageView ivAvatar;
     private String uuid = "";
     static boolean active = false;
+    private Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+    private long[] pattern = {0, 100, 1000};
+
 
     @Override
     public void onStart() {
@@ -70,9 +73,6 @@ public class UnlockScreenActivity extends AppCompatActivity implements UnlockScr
                 uuid = bundle.getString("uuid");
             }
         }
-
-        Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-        long[] pattern = {0, 100, 1000};
 
         v.vibrate(pattern, 0);
 
