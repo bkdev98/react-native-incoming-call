@@ -8,6 +8,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.view.View;
 import android.net.Uri;
+import android.os.Vibrator;
+import android.content.Context;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -69,6 +71,11 @@ public class UnlockScreenActivity extends AppCompatActivity implements UnlockScr
             }
         }
 
+        Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+        long[] pattern = {0, 100, 1000};
+
+        v.vibrate(pattern, 0);
+
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN | WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON | WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON
                 | WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED | WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
 
@@ -77,6 +84,7 @@ public class UnlockScreenActivity extends AppCompatActivity implements UnlockScr
             @Override
             public void onClick(View view) {
                 try {
+                    v.cancel();
                     acceptDialing();
                 } catch (Exception e) {
                     WritableMap params = Arguments.createMap();
@@ -91,9 +99,11 @@ public class UnlockScreenActivity extends AppCompatActivity implements UnlockScr
         rejectCallBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                v.cancel();
                 dismissDialing();
             }
         });
+
     }
 
     @Override
