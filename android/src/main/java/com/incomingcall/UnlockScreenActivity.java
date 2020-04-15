@@ -28,9 +28,8 @@ public class UnlockScreenActivity extends AppCompatActivity implements UnlockScr
     private ImageView ivAvatar;
     private String uuid = "";
     static boolean active = false;
-    private Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+    private Vibrator v = (Vibrator) IncomingCallModule.reactContext.getSystemService(Context.VIBRATOR_SERVICE);
     private long[] pattern = {0, 100, 1000};
-
 
     @Override
     public void onStart() {
@@ -74,10 +73,10 @@ public class UnlockScreenActivity extends AppCompatActivity implements UnlockScr
             }
         }
 
-        v.vibrate(pattern, 0);
-
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN | WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON | WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON
                 | WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED | WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
+
+        v.vibrate(pattern, 0);
 
         AnimateImage acceptCallBtn = findViewById(R.id.ivAcceptCall);
         acceptCallBtn.setOnClickListener(new View.OnClickListener() {
