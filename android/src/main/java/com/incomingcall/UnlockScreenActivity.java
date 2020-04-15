@@ -59,11 +59,11 @@ public class UnlockScreenActivity extends AppCompatActivity implements UnlockScr
                 String displayName = bundle.getString("displayName");
                 tvName.setText(displayName);
             }
-            if (bundle.containsKey("avatar")) {
-                String avatar = bundle.getString("avatar");
-                Uri avatarUri = Uri.parse(avatar);
-                ivAvatar.setImageURI(avatarUri);
-            }
+            // if (bundle.containsKey("avatar")) {
+            //     String avatar = bundle.getString("avatar");
+            //     Uri avatarUri = Uri.parse(avatar);
+            //     ivAvatar.setImageURI(avatarUri);
+            // }
             if (bundle.containsKey("uuid")) {
                 uuid = bundle.getString("uuid");
             }
