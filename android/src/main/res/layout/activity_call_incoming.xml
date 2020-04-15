@@ -42,9 +42,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:textSize="26sp"
-            android:textStyle="bold"
+            android:fontFamily="sans-serif"
             android:textColor="#FFFFFF"
-            android:fontFamily="SanFranciscoDisplay-Medium"
             />
 
         <TextView
@@ -64,7 +63,7 @@
         android:orientation="horizontal"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="50dp"
+        android:layout_marginBottom="60dp"
         >
 
         <com.incomingcall.AnimateImage
