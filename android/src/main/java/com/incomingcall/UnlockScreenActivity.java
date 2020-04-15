@@ -10,6 +10,8 @@ import android.view.View;
 import android.net.Uri;
 import android.os.Vibrator;
 import android.content.Context;
+import android.media.MediaPlayer;
+import android.provider.Settings;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -29,7 +31,8 @@ public class UnlockScreenActivity extends AppCompatActivity implements UnlockScr
     private String uuid = "";
     static boolean active = false;
     private Vibrator v = (Vibrator) IncomingCallModule.reactContext.getSystemService(Context.VIBRATOR_SERVICE);
-    private long[] pattern = {0, 100, 1000};
+    private long[] pattern = {0, 1000, 800};
+    private MediaPlayer player = MediaPlayer.create(this, Settings.System.DEFAULT_RINGTONE_URI);
 
     @Override
     public void onStart() {
@@ -77,6 +80,7 @@ public class UnlockScreenActivity extends AppCompatActivity implements UnlockScr
                 | WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED | WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
 
         v.vibrate(pattern, 0);
+        player.start();
 
         AnimateImage acceptCallBtn = findViewById(R.id.ivAcceptCall);
         acceptCallBtn.setOnClickListener(new View.OnClickListener() {
@@ -84,6 +88,7 @@ public class UnlockScreenActivity extends AppCompatActivity implements UnlockScr
             public void onClick(View view) {
                 try {
                     v.cancel();
+                    player.stop();
                     acceptDialing();
                 } catch (Exception e) {
                     WritableMap params = Arguments.createMap();
@@ -99,6 +104,7 @@ public class UnlockScreenActivity extends AppCompatActivity implements UnlockScr
             @Override
             public void onClick(View view) {
                 v.cancel();
+                player.stop();
                 dismissDialing();
             }
         });
