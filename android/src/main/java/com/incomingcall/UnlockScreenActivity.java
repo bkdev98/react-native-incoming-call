@@ -27,7 +27,6 @@ import com.squareup.picasso.Picasso;
 public class UnlockScreenActivity extends AppCompatActivity implements UnlockScreenActivityInterface {
 
     private static final String TAG = "MessagingService";
-    private TextView tvBody;
     private TextView tvName;
     private ImageView ivAvatar;
     private String uuid = "";
@@ -54,26 +53,21 @@ public class UnlockScreenActivity extends AppCompatActivity implements UnlockScr
 
         setContentView(R.layout.activity_call_incoming);
 
-        tvBody = findViewById(R.id.tvBody);
         tvName = findViewById(R.id.tvName);
         ivAvatar = findViewById(R.id.ivAvatar);
 
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
-            if (bundle.containsKey("body")) {
-                String body = bundle.getString("body");
-                tvBody.setText(body);
+            if (bundle.containsKey("uuid")) {
+                uuid = bundle.getString("uuid");
             }
-            if (bundle.containsKey("displayName")) {
-                String displayName = bundle.getString("displayName");
-                tvName.setText(displayName);
+            if (bundle.containsKey("name")) {
+                String name = bundle.getString("name");
+                tvName.setText(name);
             }
             if (bundle.containsKey("avatar")) {
                 String avatar = bundle.getString("avatar");
                 Picasso.get().load(avatar).transform(new CircleTransform()).into(ivAvatar);
-            }
-            if (bundle.containsKey("uuid")) {
-                uuid = bundle.getString("uuid");
             }
         }
 
