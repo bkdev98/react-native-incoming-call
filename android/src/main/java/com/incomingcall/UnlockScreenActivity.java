@@ -1,7 +1,5 @@
 package com.incomingcall;
 
-import java.net.URL;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -14,7 +12,6 @@ import android.os.Vibrator;
 import android.content.Context;
 import android.media.MediaPlayer;
 import android.provider.Settings;
-import android.graphics.BitmapFactory;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -73,8 +70,7 @@ public class UnlockScreenActivity extends AppCompatActivity implements UnlockScr
             }
             if (bundle.containsKey("avatar")) {
                 String avatar = bundle.getString("avatar");
-                Log.d("AVATAR", avatar);
-                Picasso.get().load(avatar).into(ivAvatar);
+                Picasso.get().load(avatar).transform(new CircleTransform()).into(ivAvatar);
             }
             if (bundle.containsKey("uuid")) {
                 uuid = bundle.getString("uuid");
