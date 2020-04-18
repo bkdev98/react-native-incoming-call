@@ -25,6 +25,8 @@ import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
 
+import com.squareup.picasso.Picasso;
+
 public class UnlockScreenActivity extends AppCompatActivity implements UnlockScreenActivityInterface {
 
     private static final String TAG = "MessagingService";
@@ -71,13 +73,8 @@ public class UnlockScreenActivity extends AppCompatActivity implements UnlockScr
             }
             if (bundle.containsKey("avatar")) {
                 String avatar = bundle.getString("avatar");
-                try {
-                    URL avatarUrl = new URL(avatar);
-                    ivAvatar.setImageBitmap(BitmapFactory.decodeStream(avatarUrl.openConnection().getInputStream()));
-                } catch (Exception e) {
-                    Log.e("Error", e.getMessage());
-                    e.printStackTrace();
-                }
+                Log.d("AVATAR", avatar);
+                Picasso.get().load(avatar).into(ivAvatar);
             }
             if (bundle.containsKey("uuid")) {
                 uuid = bundle.getString("uuid");

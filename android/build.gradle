@@ -73,6 +73,7 @@ repositories {
 dependencies {
     //noinspection GradleDynamicVersion
     implementation 'com.facebook.react:react-native:+'  // From node_modules
+    implementation 'com.squareup.picasso:picasso:2.71828'
 }
 
 def configureReactNativePom(def pom) {
