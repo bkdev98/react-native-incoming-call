@@ -12,6 +12,7 @@ import android.os.Vibrator;
 import android.content.Context;
 import android.media.MediaPlayer;
 import android.provider.Settings;
+import android.graphics.BitmapFactory;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -66,11 +67,16 @@ public class UnlockScreenActivity extends AppCompatActivity implements UnlockScr
                 String displayName = bundle.getString("displayName");
                 tvName.setText(displayName);
             }
-            // if (bundle.containsKey("avatar")) {
-            //     String avatar = bundle.getString("avatar");
-            //     Uri avatarUri = Uri.parse(avatar);
-            //     ivAvatar.setImageURI(avatarUri);
-            // }
+            if (bundle.containsKey("avatar")) {
+                String avatar = bundle.getString("avatar");
+                try {
+                    URL avatarUrl = new URL(avatar);
+                    ivAvatar.setImageBitmap(BitmapFactory.decodeStream(avatarUrl.openConnection().getInputStream()));
+                } catch (Exception e) {
+                    Log.e("Error", e.getMessage());
+                    e.printStackTrace();
+                }
+            }
             if (bundle.containsKey("uuid")) {
                 uuid = bundle.getString("uuid");
             }
