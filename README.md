@@ -1,6 +1,6 @@
 # react-native-incoming-call
 
-> React Native module to display incoming call activity, best result when using with firebase background messaging. Only for Android since iOS we have VoIP.
+> React Native module to display custom incoming call activity, best result when using with firebase background messaging. Only for Android since iOS we have VoIP.
 
 Yes I heard you could use **self managed ConnectionService** thing. But since I'm not an Android expert, this is a solution I found acceptable.
 
@@ -36,10 +36,28 @@ IncomingCall.dismiss();
 // Listen to cancel and answer call events
 useEffect(() => {
   if (Platform.OS === "android") {
-    // Handle end call action. Should call IncomingCall.dismiss() and other exit room actions.
-    DeviceEventEmitter.addListener("endCall", payload => {});
-    // Handle answer call action. Should navigate user to call screen.
-    DeviceEventEmitter.addListener("answerCall", payload => {});
+    /**
+     * App in background or killed state, if user press answer button
+     * IncomingCall open app and put payload to getLaunchParameters
+     * You could start the call action here.
+     * End call action in this case not supported yet.
+    */
+    const payload = await IncomingCall.getLaunchParameters();
+    console.log('launchParameters', payload);
+    IncomingCall.clearLaunchParameters();
+    if (payload) {
+      // Start call here
+    }
+
+    /**
+     * App in foreground: listen to call events and determine what to do next
+    */
+    DeviceEventEmitter.addListener("endCall", payload => {
+      // End call action here
+    });
+    DeviceEventEmitter.addListener("answerCall", payload => {
+      // Start call action here
+    });
   }
 }, []);
 ```

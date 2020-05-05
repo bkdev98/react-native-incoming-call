@@ -120,7 +120,7 @@ public class UnlockScreenActivity extends AppCompatActivity implements UnlockScr
         params.putBoolean("done", true);
         params.putString("uuid", uuid);
 
-        if (isAppOnForeground()) {
+        if (IncomingCallModule.reactContext.hasCurrentActivity() && isAppOnForeground()) {
             // App in foreground, send event for app to listen
             sendEvent("answerCall", params);
         } else {
