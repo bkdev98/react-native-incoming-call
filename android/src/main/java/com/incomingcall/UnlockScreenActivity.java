@@ -14,6 +14,7 @@ import android.media.MediaPlayer;
 import android.provider.Settings;
 
 import androidx.appcompat.app.AppCompatActivity;
+import android.app.ActivityManager;
 
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.ReactContext;
@@ -118,11 +119,11 @@ public class UnlockScreenActivity extends AppCompatActivity implements UnlockScr
         params.putBoolean("done", true);
         params.putString("uuid", uuid);
 
-        if (IncomingCallModule.reactContext.hasCurrentActivity()) {
-            // App in foreground or background, send event for app to listen
+        if (isAppOnForeground()) {
+            // App in foreground, send event for app to listen
             sendEvent("answerCall", params);
         } else {
-            // App killed, start app and add launch params
+            // App in background or killed, start app and add launch params
             String packageNames = IncomingCallModule.reactContext.getPackageName();
             Intent launchIntent = IncomingCallModule.reactContext.getPackageManager().getLaunchIntentForPackage(packageNames);
             String className = launchIntent.getComponent().getClassName();
@@ -137,7 +138,7 @@ public class UnlockScreenActivity extends AppCompatActivity implements UnlockScr
             } catch(Exception e) {
                 Log.e("RNIncomingCall", "Class not found", e);
                 return;
-            } 
+            }
         }
 
         finish();
@@ -190,5 +191,25 @@ public class UnlockScreenActivity extends AppCompatActivity implements UnlockScr
         IncomingCallModule.reactContext
                 .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
                 .emit(eventName, params);
+    }
+
+    private boolean isAppOnForeground() {
+        /**
+         * We need to check if app is in foreground otherwise the app will crash.
+         * http://stackoverflow.com/questions/8489993/check-android-application-is-in-foreground-or-not
+         **/
+        ActivityManager activityManager = (ActivityManager) IncomingCallModule.reactContext.getSystemService(Context.ACTIVITY_SERVICE);
+        List<ActivityManager.RunningAppProcessInfo> appProcesses = activityManager.getRunningAppProcesses();
+        if (appProcesses == null) {
+            return false;
+        }
+        final String packageName = IncomingCallModule.reactContext.getPackageName();
+        for (ActivityManager.RunningAppProcessInfo appProcess : appProcesses) {
+            if (appProcess.importance == ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND
+                    && appProcess.processName.equals(packageName)) {
+                return true;
+            }
+        }
+        return false;
     }
 }
