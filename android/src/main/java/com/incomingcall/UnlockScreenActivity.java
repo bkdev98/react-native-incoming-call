@@ -67,7 +67,7 @@ public class UnlockScreenActivity extends AppCompatActivity implements UnlockScr
             }
             if (bundle.containsKey("avatar")) {
                 String avatar = bundle.getString("avatar");
-                if (avatar) {
+                if (avatar != null) {
                     Picasso.get().load(avatar).transform(new CircleTransform()).into(ivAvatar);
                 }
             }
