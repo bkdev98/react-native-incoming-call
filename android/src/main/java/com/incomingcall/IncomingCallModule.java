@@ -67,7 +67,7 @@ public class IncomingCallModule extends ReactContextBaseJavaModule {
         Bundle b = intent.getExtras();
         String value = "";
         if (b != null) {
-            value = b.getString("param", "");            
+            value = b.getString("uuid", "");            
         }
         promise.resolve(value);
     }
