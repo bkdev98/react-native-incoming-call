@@ -37,7 +37,7 @@ public class IncomingCallModule extends ReactContextBaseJavaModule {
             bundle.putString("name", name);
             bundle.putString("avatar", avatar);
             Intent i = new Intent(reactContext, UnlockScreenActivity.class);
-            i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+            i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_REORDER_TO_FRONT | Intent.FLAG_ACTIVITY_SINGLE_TOP);
             i.addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED +
             WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD +
             WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
@@ -57,5 +57,21 @@ public class IncomingCallModule extends ReactContextBaseJavaModule {
         //     reactContext.getApplicationContext().startActivity(i);
         // }
         assert activity != null;
+    }
+
+    @ReactMethod
+    public void getLaunchParameters(final Promise promise) {
+        final Activity activity = getCurrentActivity();
+        final Intent intent = activity.getIntent();
+        Bundle b = intent.getExtras();
+        promise.resolve(b);
+    }
+
+    @ReactMethod
+    public void clearLaunchParameters() {
+        final Activity activity = getCurrentActivity();
+        final Intent intent = activity.getIntent();
+        Bundle b = new Bundle();
+        intent.putExtras(b);
     }
 }

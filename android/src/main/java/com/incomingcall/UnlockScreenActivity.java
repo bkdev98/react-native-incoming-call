@@ -114,25 +114,30 @@ public class UnlockScreenActivity extends AppCompatActivity implements UnlockScr
     }
 
     private void acceptDialing() {
-        // Intent i = new Intent(this, MainActivity.class);
-        String packageName = getPackageName();
-
-//         Intent i = getPackageManager().getLaunchIntentForPackage(packageName);
-//         if (i != null) {
-//             i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-//             i.putExtra("uuid", uuid);
-//             startActivity(i);
-//         } else {
-//             // No intent
-//             WritableMap params = Arguments.createMap();
-//             params.putString("message", "No intent");
-//             sendEvent("error", params);
-//         }
-
         WritableMap params = Arguments.createMap();
         params.putBoolean("done", true);
         params.putString("uuid", uuid);
-        sendEvent("answerCall", params);
+
+        if (IncomingCallModule.reactContext.hasCurrentActivity()) {
+            // App in foreground or background, send event for app to listen
+            sendEvent("answerCall", params);
+        } else {
+            // App killed, start app and add launch params
+            String packageNames = IncomingCallModule.reactContext.getPackageName();
+            Intent launchIntent = IncomingCallModule.reactContext.getPackageManager().getLaunchIntentForPackage(packageNames);
+            String className = launchIntent.getComponent().getClassName();
+            try {
+                Class<?> activityClass = Class.forName(className);
+                Intent i = new Intent(reactContext, activityClass);
+                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_REORDER_TO_FRONT | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                i.putExtra(params);
+                IncomingCallModule.reactContext.startActivity(i);
+            } catch(Exception e) {
+                Log.e("RNIncomingCall", "Class not found", e);
+                return;
+            }
+        }
+
         finish();
     }
 
@@ -141,7 +146,13 @@ public class UnlockScreenActivity extends AppCompatActivity implements UnlockScr
         params.putBoolean("done", false);
         params.putString("uuid", uuid);
 
-        sendEvent("endCall", params);
+        if (IncomingCallModule.reactContext.hasCurrentActivity()) {
+            // App in foreground or background, send event for app to listen
+            sendEvent("endCall", params);
+        } else {
+            // App killed, need to do something after
+        }
+
         finish();
     }
 
