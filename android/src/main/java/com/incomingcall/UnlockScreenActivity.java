@@ -128,14 +128,14 @@ public class UnlockScreenActivity extends AppCompatActivity implements UnlockScr
             String className = launchIntent.getComponent().getClassName();
             try {
                 Class<?> activityClass = Class.forName(className);
-                Intent i = new Intent(reactContext, activityClass);
+                Intent i = new Intent(IncomingCallModule.reactContext, activityClass);
                 i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_REORDER_TO_FRONT | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                i.putExtra("param", params);
+                i.putExtras(params);
                 IncomingCallModule.reactContext.startActivity(i);
             } catch(Exception e) {
                 Log.e("RNIncomingCall", "Class not found", e);
                 return;
-            }
+            } 
         }
 
         finish();
