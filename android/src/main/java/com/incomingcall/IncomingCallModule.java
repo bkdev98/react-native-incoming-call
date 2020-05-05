@@ -64,7 +64,11 @@ public class IncomingCallModule extends ReactContextBaseJavaModule {
         final Activity activity = getCurrentActivity();
         final Intent intent = activity.getIntent();
         Bundle b = intent.getExtras();
-        promise.resolve(b);
+        String value = "";
+        if (b != null) {
+            value = b.getString("param", "");            
+        }
+        promise.resolve(value);
     }
 
     @ReactMethod
