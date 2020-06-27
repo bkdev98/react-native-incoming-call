@@ -1,0 +1,34 @@
+{
+  "name": "rncall-example",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "android": "react-native run-android",
+    "ios": "react-native run-ios",
+    "start": "react-native start",
+    "test": "jest",
+    "lint": "eslint ."
+  },
+  "dependencies": {
+    "@react-native-community/clipboard": "^1.2.2",
+    "@react-native-firebase/app": "^7.3.1",
+    "@react-native-firebase/messaging": "^7.1.8",
+    "react": "16.11.0",
+    "react-native": "0.62.2",
+    "react-native-bootsplash": "^2.2.4",
+    "react-native-incoming-call": "bkdev98/react-native-incoming-call"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.6.2",
+    "@babel/runtime": "^7.6.2",
+    "@react-native-community/eslint-config": "^0.0.5",
+    "babel-jest": "^24.9.0",
+    "eslint": "^6.5.1",
+    "jest": "^24.9.0",
+    "metro-react-native-babel-preset": "^0.58.0",
+    "react-test-renderer": "16.11.0"
+  },
+  "jest": {
+    "preset": "react-native"
+  }
+}

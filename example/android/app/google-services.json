@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "642991844223",
+    "firebase_url": "https://rncall.firebaseio.com",
+    "project_id": "rncall",
+    "storage_bucket": "rncall.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:642991844223:android:4f13d184106b1f6b04084a",
+        "android_client_info": {
+          "package_name": "com.quocs.rncall"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "642991844223-r59832hcer4ccom8prqv65hooud3dsu1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCx0tJqPY_u2T7BeFLnKSnpVshUgRCPnlc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "642991844223-r59832hcer4ccom8prqv65hooud3dsu1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
