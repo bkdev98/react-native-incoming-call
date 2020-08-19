@@ -17,7 +17,7 @@
     "react-native": "0.62.2",
     "react-native-bootsplash": "^2.2.4",
     "react-native-callkeep": "git://github.com/jpudysz/react-native-callkeep",
-    "react-native-incoming-call": "git://github.com/bkdev98/react-native-incomming-call#v2",
+    "react-native-incoming-call": "git://github.com/bkdev98/react-native-incoming-call#v2",
     "uuid": "^8.3.0"
   },
   "devDependencies": {
