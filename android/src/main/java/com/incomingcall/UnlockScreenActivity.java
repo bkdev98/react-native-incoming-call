@@ -30,6 +30,7 @@ public class UnlockScreenActivity extends AppCompatActivity implements UnlockScr
 
     private static final String TAG = "MessagingService";
     private TextView tvName;
+    private TextView tvInfo;
     private ImageView ivAvatar;
     private String uuid = "";
     static boolean active = false;
@@ -56,6 +57,7 @@ public class UnlockScreenActivity extends AppCompatActivity implements UnlockScr
         setContentView(R.layout.activity_call_incoming);
 
         tvName = findViewById(R.id.tvName);
+        tvInfo = findViewById(R.id.tvInfo);
         ivAvatar = findViewById(R.id.ivAvatar);
 
         Bundle bundle = getIntent().getExtras();
@@ -66,6 +68,10 @@ public class UnlockScreenActivity extends AppCompatActivity implements UnlockScr
             if (bundle.containsKey("name")) {
                 String name = bundle.getString("name");
                 tvName.setText(name);
+            }
+            if (bundle.containsKey("info")) {
+                String info = bundle.getString("info");
+                tvInfo.setText(info);
             }
             if (bundle.containsKey("avatar")) {
                 String avatar = bundle.getString("avatar");

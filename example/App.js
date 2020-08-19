@@ -71,8 +71,8 @@ export function handleRemoteMessage(remoteMessage, isHeadless) {
       IncomingCall.display(
         callUUID,
         'Quocs',
-        'Video Call',
         'https://avatars3.githubusercontent.com/u/16166195',
+        'Incomming Call'
       );
     }
     // Could also persist data here for later uses
@@ -203,7 +203,7 @@ const App = () => {
           </>
         ) : deviceToken ? (
           <>
-            <Image style={styles.image} source={{uri: 'ic_launcher'}} />
+            <Image style={styles.image} source={require('./images/waiting-call.jpg')} />
             <Text style={styles.header}>FCM Device Token</Text>
             <Text style={styles.text}>{deviceToken}</Text>
             <TouchableHighlight
