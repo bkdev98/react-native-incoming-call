@@ -5,7 +5,7 @@ import App, {handleRemoteMessage} from './App';
 import {name as appName} from './app.json';
 
 messaging().setBackgroundMessageHandler(async remoteMessage => {
-  handleRemoteMessage(remoteMessage);
+  handleRemoteMessage(remoteMessage, true);
 });
 
 AppRegistry.registerComponent(appName, () => App);

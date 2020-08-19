@@ -16,7 +16,9 @@
     "react": "16.11.0",
     "react-native": "0.62.2",
     "react-native-bootsplash": "^2.2.4",
-    "react-native-incoming-call": "bkdev98/react-native-incoming-call"
+    "react-native-callkeep": "git://github.com/jpudysz/react-native-callkeep",
+    "react-native-incoming-call": "MajidNajafi/react-native-incoming-call",
+    "uuid": "^8.3.0"
   },
   "devDependencies": {
     "@babel/core": "^7.6.2",

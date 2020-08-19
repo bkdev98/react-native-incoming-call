@@ -7,19 +7,74 @@ import {
   TouchableHighlight,
   DeviceEventEmitter,
   Image,
+  PermissionsAndroid,
+  AppState,
 } from 'react-native';
 import RNBootSplash from 'react-native-bootsplash';
 import messaging from '@react-native-firebase/messaging';
 import Clipboard from '@react-native-community/clipboard';
 import IncomingCall from 'react-native-incoming-call';
+import RNCallKeep from 'react-native-callkeep';
 
-export function handleRemoteMessage(remoteMessage) {
+const USE_CALLKEEP = false;
+
+const PRIMARY_COLOR = USE_CALLKEEP ? '#1AD1EC' : '#8271FC';
+const SECONDARY_COLOR = USE_CALLKEEP ? '#F55994' : '#FDDA97';
+const BTN_LABEL_COLOR = USE_CALLKEEP ? '#FFFFFF' : '#21346E';
+
+function setupCallKeep() {
+  const options = {
+    android: {
+      alertTitle: 'Permissions Required',
+      alertDescription:
+        'This application needs to access your phone calling accounts to make calls',
+      cancelButton: 'Cancel',
+      okButton: 'ok',
+      imageName: 'ic_launcher',
+      additionalPermissions: [PermissionsAndroid.PERMISSIONS.READ_CONTACTS],
+    },
+  };
+
+  try {
+    RNCallKeep.setup(options);
+    RNCallKeep.setAvailable(true); // Only used for Android, see doc above.
+  } catch (err) {
+    console.error('initializeCallKeep error:', err.message);
+  }
+}
+
+USE_CALLKEEP && setupCallKeep();
+
+export function handleRemoteMessage(remoteMessage, isHeadless) {
   if (remoteMessage?.notification?.title === 'Incoming call') {
-    IncomingCall.display(
-      '123',
-      'Quocs',
-      'https://avatars3.githubusercontent.com/u/16166195',
-    );
+    console.log('ready...');
+    const callUUID = '23727631';
+    if (USE_CALLKEEP) {
+      setupCallKeep();
+      RNCallKeep.displayIncomingCall(
+        callUUID,
+        'khanh@quocs.com',
+        'Quoc Khanh',
+        'email',
+        true,
+      );
+      RNCallKeep.addEventListener('answerCall', ({callUUID: uuid}) => {
+        RNCallKeep.setCurrentCallActive(uuid);
+        if (isHeadless) {
+          RNCallKeep.openAppFromHeadlessMode(uuid);
+        } else {
+          console.log(uuid);
+          RNCallKeep.backToForeground();
+        }
+      });
+    } else {
+      IncomingCall.display(
+        callUUID,
+        'Quocs',
+        'Video Call',
+        'https://avatars3.githubusercontent.com/u/16166195',
+      );
+    }
     // Could also persist data here for later uses
   }
 }
@@ -37,6 +92,10 @@ const App = () => {
       .then(token => {
         return setDeviceToken(token);
       });
+
+    AppState.addEventListener('change', state =>
+      console.log('state change', state),
+    );
 
     // Listen to whether the token changes
     return messaging().onTokenRefresh(token => {
@@ -71,8 +130,43 @@ const App = () => {
     });
   }
 
+  async function handleCallKeep() {
+    const extras = await RNCallKeep.getExtrasFromHeadlessMode();
+
+    if (extras) {
+      console.log('getExtrasFromHeadlessMode', extras);
+    }
+
+    const scs = await RNCallKeep.supportConnectionService();
+
+    console.log('supportConnectionService: ', scs);
+
+    RNCallKeep.addEventListener('answerCall', payload => {
+      // Do your normal `Answering` actions here.
+      setCallPayload(payload);
+      console.log('answerCall', payload);
+      RNCallKeep.backToForeground();
+    });
+
+    RNCallKeep.addEventListener('endCall', payload => {
+      // Do your normal `Hang Up` actions here
+      setCallPayload(payload);
+      console.log('endCall', payload);
+    });
+
+    RNCallKeep.addEventListener('didDisplayIncomingCall', payload => {
+      // you might want to do following things when receiving this event:
+      // - Start playing ringback if it is an outgoing call
+      console.log('didDisplayIncomingCall', payload);
+    });
+  }
+
   useEffect(() => {
-    handleIncomingCall();
+    if (USE_CALLKEEP) {
+      handleCallKeep();
+    } else {
+      handleIncomingCall();
+    }
   }, []);
 
   function handleCopyToken() {
@@ -87,7 +181,10 @@ const App = () => {
   return (
     <View style={styles.wrapper}>
       <Text style={styles.appTitle}>RNCall</Text>
-      <Text style={styles.appDesc}>example for react-native-incoming-call</Text>
+      <Text style={styles.appDesc}>
+        example for{' '}
+        {!USE_CALLKEEP ? 'react-native-incoming-call' : 'react-native-callkeep'}
+      </Text>
       <View style={styles.container}>
         {callPayload ? (
           <>
@@ -106,10 +203,7 @@ const App = () => {
           </>
         ) : deviceToken ? (
           <>
-            <Image
-              style={styles.image}
-              source={require('./images/waiting-call.jpg')}
-            />
+            <Image style={styles.image} source={{uri: 'ic_launcher'}} />
             <Text style={styles.header}>FCM Device Token</Text>
             <Text style={styles.text}>{deviceToken}</Text>
             <TouchableHighlight
@@ -136,7 +230,7 @@ const App = () => {
 const styles = StyleSheet.create({
   wrapper: {
     flex: 1,
-    backgroundColor: '#8271FC',
+    backgroundColor: PRIMARY_COLOR,
   },
   appTitle: {
     textAlign: 'center',
@@ -184,7 +278,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     paddingHorizontal: 20,
     bottom: -25,
-    backgroundColor: '#FDDA97',
+    backgroundColor: SECONDARY_COLOR,
     justifyContent: 'center',
     alignItems: 'center',
     alignSelf: 'center',
@@ -192,7 +286,7 @@ const styles = StyleSheet.create({
   },
   btnLabel: {
     fontSize: 14,
-    color: '#21346E',
+    color: BTN_LABEL_COLOR,
     fontFamily: 'monospace',
     fontWeight: '700',
   },

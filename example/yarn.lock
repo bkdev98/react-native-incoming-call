@@ -5437,9 +5437,13 @@ react-native-bootsplash@^2.2.4:
     jimp "0.10.1"
     prompts "2.3.2"
 
-react-native-incoming-call@bkdev98/react-native-incoming-call:
-  version "1.2.0"
-  resolved "https://codeload.github.com/bkdev98/react-native-incoming-call/tar.gz/65a2059d155c025b2de377c6c942aecee8836a86"
+"react-native-callkeep@git://github.com/jpudysz/react-native-callkeep":
+  version "3.0.13"
+  resolved "git://github.com/jpudysz/react-native-callkeep#31118a0c90ca5d58824b33ed9ddb80b63e930ea7"
+
+react-native-incoming-call@MajidNajafi/react-native-incoming-call:
+  version "1.2.18"
+  resolved "https://codeload.github.com/MajidNajafi/react-native-incoming-call/tar.gz/97d8891e98d66faed0939fa0600e208c87955156"
 
 react-native@0.62.2:
   version "0.62.2"
@@ -6578,6 +6582,11 @@ uuid@^3.3.2:
   version "3.4.0"
   resolved "https://registry.yarnpkg.com/uuid/-/uuid-3.4.0.tgz#b23e4358afa8a202fe7a100af1f5f883f02007ee"
   integrity sha512-HjSDRw6gZE5JMggctHBcjVak08+KEVhSIiDzFnT9S9aegmp85S/bReBVTb4QTFaRNptJ9kuYaNhnbNEOkbKb/A==
+
+uuid@^8.3.0:
+  version "8.3.0"
+  resolved "https://registry.yarnpkg.com/uuid/-/uuid-8.3.0.tgz#ab738085ca22dc9a8c92725e459b1d507df5d6ea"
+  integrity sha512-fX6Z5o4m6XsXBdli9g7DtWgAx+osMsRRZFKma1mIUsLCz6vRvv+pz5VNbyu9UEDzpMWulZfvpgb/cmDXVulYFQ==
 
 v8-compile-cache@^2.0.3:
   version "2.1.1"
