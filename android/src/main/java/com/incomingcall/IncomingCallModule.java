@@ -62,7 +62,7 @@ public class IncomingCallModule extends ReactContextBaseJavaModule {
 
         // assert activity != null;
 
-        UnlockScreenActivity.onDestroy();
+        UnlockScreenActivity.finish();
 
         return;
     }
