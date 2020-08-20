@@ -39,6 +39,7 @@ public class UnlockScreenActivity extends AppCompatActivity implements UnlockScr
     private Vibrator v = (Vibrator) IncomingCallModule.reactContext.getSystemService(Context.VIBRATOR_SERVICE);
     private long[] pattern = {0, 1000, 800};
     private MediaPlayer player = MediaPlayer.create(IncomingCallModule.reactContext, Settings.System.DEFAULT_RINGTONE_URI);
+    private Activity fa;
 
     @Override
     public void onStart() {
@@ -55,6 +56,8 @@ public class UnlockScreenActivity extends AppCompatActivity implements UnlockScr
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        fa = this;
 
         setContentView(R.layout.activity_call_incoming);
 
@@ -126,7 +129,7 @@ public class UnlockScreenActivity extends AppCompatActivity implements UnlockScr
     public static void dismissIncoming() {
         v.cancel();
         player.stop();
-        finish();
+        fa.finish();
     }
 
     private void acceptDialing() {
