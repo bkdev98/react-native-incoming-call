@@ -126,6 +126,12 @@ public class UnlockScreenActivity extends AppCompatActivity implements UnlockScr
         // Dont back
     }
 
+    public static void dismissIncoming() {
+        v.cancel();
+        player.stop();
+        this.finish();
+    }
+
     private void acceptDialing() {
         WritableMap params = Arguments.createMap();
         params.putBoolean("accept", true);

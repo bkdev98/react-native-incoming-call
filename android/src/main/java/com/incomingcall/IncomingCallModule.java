@@ -62,7 +62,7 @@ public class IncomingCallModule extends ReactContextBaseJavaModule {
 
         // assert activity != null;
 
-        UnlockScreenActivity.fa.finish();
+        UnlockScreenActivity.dismissIncoming();
 
         return;
     }
