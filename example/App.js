@@ -76,10 +76,12 @@ export function handleRemoteMessage(remoteMessage, isHeadless) {
       );
       DeviceEventEmitter.addListener('endCall', payload => {
         // End call action here
+        console.log('endCall', payload);
       });
       DeviceEventEmitter.addListener('answerCall', payload => {
         // Start call action here
-        IncomingCall.backToForeground();
+        console.log('answerCall', payload);
+        RNCallKeep.backToForeground();
       });
     }
     // Could also persist data here for later uses

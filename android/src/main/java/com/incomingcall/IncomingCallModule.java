@@ -63,9 +63,10 @@ public class IncomingCallModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void backToForeground() {
-        String packageName = reactContext.getApplicationContext().getPackageName();
-        Intent focusIntent = reactContext.getPackageManager().getLaunchIntentForPackage(packageName).cloneFilter();
-        Activity activity = reactContext.getCurrentActivity();
+        Context context = getAppContext();
+        String packageName = context.getApplicationContext().getPackageName();
+        Intent focusIntent = context.getPackageManager().getLaunchIntentForPackage(packageName).cloneFilter();
+        Activity activity = getCurrentActivity();
         boolean isOpened = activity != null;
         Log.d(TAG, "backToForeground, app isOpened ?" + (isOpened ? "true" : "false"));
 
