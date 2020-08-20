@@ -12,6 +12,7 @@ import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.Callback;
 import com.facebook.react.bridge.Promise;
+import com.facebook.react.bridge.WritableMap;
 
 public class IncomingCallModule extends ReactContextBaseJavaModule {
 
@@ -19,6 +20,7 @@ public class IncomingCallModule extends ReactContextBaseJavaModule {
     public static Activity mainActivity;
 
     private static final String TAG = "RNIC:IncomingCallModule";
+    private WritableMap headlessExtras;
 
     public IncomingCallModule(ReactApplicationContext context) {
         super(context);
@@ -57,11 +59,6 @@ public class IncomingCallModule extends ReactContextBaseJavaModule {
     public void dismiss() {
         final Activity activity = reactContext.getCurrentActivity();
 
-        // if (MainActivity.active) {
-        //     Intent i = new Intent(reactContext, MainActivity.class);
-        //     i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        //     reactContext.getApplicationContext().startActivity(i);
-        // }
         assert activity != null;
     }
 
@@ -85,22 +82,40 @@ public class IncomingCallModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void getLaunchParameters(final Promise promise) {
-        final Activity activity = getCurrentActivity();
-        final Intent intent = activity.getIntent();
-        Bundle b = intent.getExtras();
-        String value = "";
-        if (b != null) {
-            value = b.getString("uuid", "");            
+    public void openAppFromHeadlessMode(String uuid) {
+        Context context = getAppContext();
+        String packageName = context.getApplicationContext().getPackageName();
+        Intent focusIntent = context.getPackageManager().getLaunchIntentForPackage(packageName).cloneFilter();
+        Activity activity = getCurrentActivity();
+        boolean isOpened = activity != null;
+
+        if (!isOpened) {
+            focusIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK |
+                    WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON |
+                    WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED |
+                    WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD |
+                    WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
+
+            final WritableMap response = new WritableNativeMap();
+            response.putBoolean("isHeadless", true);
+            response.putString("uuid", uuid);
+
+            this.headlessExtras = response;
+
+            getReactApplicationContext().startActivity(focusIntent);
         }
-        promise.resolve(value);
     }
 
     @ReactMethod
-    public void clearLaunchParameters() {
-        final Activity activity = getCurrentActivity();
-        final Intent intent = activity.getIntent();
-        Bundle b = new Bundle();
-        intent.putExtras(b);
+    public void getExtrasFromHeadlessMode(Promise promise) {
+        if (this.headlessExtras != null) {
+            promise.resolve(this.headlessExtras);
+
+            this.headlessExtras = null;
+
+            return;
+        }
+
+        promise.resolve(null);
     }
 }

@@ -124,44 +124,26 @@ public class UnlockScreenActivity extends AppCompatActivity implements UnlockScr
 
     private void acceptDialing() {
         WritableMap params = Arguments.createMap();
-        params.putBoolean("done", true);
+        params.putBoolean("accept", true);
         params.putString("uuid", uuid);
+        if (!IncomingCallModule.reactContext.hasCurrentActivity()) {
+            params.putBoolean("isHeadless", true);
+        }
 
         sendEvent("answerCall", params);
-
-        // if (!foregrounded()) {
-        //     // App in background or killed, start app and add launch params
-        //     String packageNames = IncomingCallModule.reactContext.getPackageName();
-        //     Intent launchIntent = IncomingCallModule.reactContext.getPackageManager().getLaunchIntentForPackage(packageNames);
-        //     String className = launchIntent.getComponent().getClassName();
-        //     try {
-        //         Class<?> activityClass = Class.forName(className);
-        //         Intent i = new Intent(IncomingCallModule.reactContext, activityClass);
-        //         i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_REORDER_TO_FRONT | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        //         Bundle b = new Bundle();
-        //         b.putString("uuid", uuid);
-        //         i.putExtras(b);
-        //         IncomingCallModule.reactContext.startActivity(i);
-        //     } catch (Exception e) {
-        //         Log.e("RNIncomingCall", "Class not found", e);
-        //         return;
-        //     }
-        // }
 
         finish();
     }
 
     private void dismissDialing() {
         WritableMap params = Arguments.createMap();
-        params.putBoolean("done", false);
+        params.putBoolean("accept", false);
         params.putString("uuid", uuid);
-
-        if (IncomingCallModule.reactContext.hasCurrentActivity()) {
-            // App in foreground or background, send event for app to listen
-            sendEvent("endCall", params);
-        } else {
-            // App killed, need to do something after
+        if (!IncomingCallModule.reactContext.hasCurrentActivity()) {
+            params.putBoolean("isHeadless", true);
         }
+
+        sendEvent("endCall", params);
 
         finish();
     }
