@@ -6,17 +6,19 @@ Yes I heard you could use **self managed ConnectionService** thing. But since I'
 
 You could also wait for [this feature request](https://github.com/react-native-webrtc/react-native-callkeep/issues/43) from `react-native-callkeep` to be resolved and have an easier life.
 
+<img width="400" src="https://github.com/bkdev98/react-native-incoming-call/raw/master/incoming-call.jpg">
+
 ## Version 2 Breaking Changes
 
 Hello there! It's been a while since I first public version 1 of this library, which contains some bugs that I don't have much time to fix.
 
 Luckily I got a client project which needs this feature again and now I have time to improve it and make sure all major features work. So here is most of it I guess:
 
-[x] More generic incoming call UI.
+- [x] More generic incoming call UI.
 
-[x] Work nicely with all application state (foreground, background, killed, locked).
+- [x] Work nicely with all application state (foreground, background, killed, locked).
 
-[x] More flexible APIs.
+- [x] More flexible APIs.
 
 *Thanks to [jpudysz](https://github.com/jpudysz/react-native-callkeep)'s folk of react-native-callkeep, version 2 is heavily depended on it.*
 
