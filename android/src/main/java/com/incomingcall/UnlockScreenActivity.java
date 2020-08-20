@@ -31,7 +31,6 @@ import com.squareup.picasso.Picasso;
 public class UnlockScreenActivity extends AppCompatActivity implements UnlockScreenActivityInterface {
 
     private static final String TAG = "MessagingService";
-    public static Activity fa;
     private TextView tvName;
     private TextView tvInfo;
     private ImageView ivAvatar;
@@ -62,8 +61,6 @@ public class UnlockScreenActivity extends AppCompatActivity implements UnlockScr
         tvName = findViewById(R.id.tvName);
         tvInfo = findViewById(R.id.tvInfo);
         ivAvatar = findViewById(R.id.ivAvatar);
-
-        fa = this;
 
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
@@ -129,7 +126,7 @@ public class UnlockScreenActivity extends AppCompatActivity implements UnlockScr
     public static void dismissIncoming() {
         v.cancel();
         player.stop();
-        this.finish();
+        finish();
     }
 
     private void acceptDialing() {
