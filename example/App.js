@@ -74,6 +74,13 @@ export function handleRemoteMessage(remoteMessage, isHeadless) {
         'https://avatars3.githubusercontent.com/u/16166195',
         'Incomming Call'
       );
+      DeviceEventEmitter.addListener('endCall', payload => {
+        // End call action here
+      });
+      DeviceEventEmitter.addListener('answerCall', payload => {
+        // Start call action here
+        IncomingCall.backToForeground();
+      });
     }
     // Could also persist data here for later uses
   }

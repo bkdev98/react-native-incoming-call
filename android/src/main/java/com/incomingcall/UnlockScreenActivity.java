@@ -129,24 +129,24 @@ public class UnlockScreenActivity extends AppCompatActivity implements UnlockScr
 
         sendEvent("answerCall", params);
 
-        if (!foregrounded()) {
-            // App in background or killed, start app and add launch params
-            String packageNames = IncomingCallModule.reactContext.getPackageName();
-            Intent launchIntent = IncomingCallModule.reactContext.getPackageManager().getLaunchIntentForPackage(packageNames);
-            String className = launchIntent.getComponent().getClassName();
-            try {
-                Class<?> activityClass = Class.forName(className);
-                Intent i = new Intent(IncomingCallModule.reactContext, activityClass);
-                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_REORDER_TO_FRONT | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                Bundle b = new Bundle();
-                b.putString("uuid", uuid);
-                i.putExtras(b);
-                IncomingCallModule.reactContext.startActivity(i);
-            } catch (Exception e) {
-                Log.e("RNIncomingCall", "Class not found", e);
-                return;
-            }
-        }
+        // if (!foregrounded()) {
+        //     // App in background or killed, start app and add launch params
+        //     String packageNames = IncomingCallModule.reactContext.getPackageName();
+        //     Intent launchIntent = IncomingCallModule.reactContext.getPackageManager().getLaunchIntentForPackage(packageNames);
+        //     String className = launchIntent.getComponent().getClassName();
+        //     try {
+        //         Class<?> activityClass = Class.forName(className);
+        //         Intent i = new Intent(IncomingCallModule.reactContext, activityClass);
+        //         i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_REORDER_TO_FRONT | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        //         Bundle b = new Bundle();
+        //         b.putString("uuid", uuid);
+        //         i.putExtras(b);
+        //         IncomingCallModule.reactContext.startActivity(i);
+        //     } catch (Exception e) {
+        //         Log.e("RNIncomingCall", "Class not found", e);
+        //         return;
+        //     }
+        // }
 
         finish();
     }
@@ -198,11 +198,5 @@ public class UnlockScreenActivity extends AppCompatActivity implements UnlockScr
         IncomingCallModule.reactContext
                 .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
                 .emit(eventName, params);
-    }
-
-    public boolean foregrounded() {
-        ActivityManager.RunningAppProcessInfo appProcessInfo = new ActivityManager.RunningAppProcessInfo();
-        ActivityManager.getMyMemoryState(appProcessInfo);
-        return (appProcessInfo.importance == RunningAppProcessInfo.IMPORTANCE_FOREGROUND || appProcessInfo.importance == RunningAppProcessInfo.IMPORTANCE_VISIBLE);
     }
 }

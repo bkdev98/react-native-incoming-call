@@ -5443,7 +5443,7 @@ react-native-bootsplash@^2.2.4:
 
 "react-native-incoming-call@git+https://github.com/bkdev98/react-native-incoming-call.git#v2":
   version "2.0.0"
-  resolved "git+https://github.com/bkdev98/react-native-incoming-call.git#3bd456d96c1185b7ab2d6b1f2090bf9c4d4e38c4"
+  resolved "git+https://github.com/bkdev98/react-native-incoming-call.git#490566d8f3b75ea0f895e9c318f6e492249f4d2e"
 
 react-native@0.62.2:
   version "0.62.2"
