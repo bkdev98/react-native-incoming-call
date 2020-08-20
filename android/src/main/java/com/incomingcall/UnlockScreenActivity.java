@@ -13,6 +13,7 @@ import android.content.Context;
 import android.media.MediaPlayer;
 import android.provider.Settings;
 import java.util.List;
+import android.app.Activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 import android.app.ActivityManager;
@@ -30,6 +31,7 @@ import com.squareup.picasso.Picasso;
 public class UnlockScreenActivity extends AppCompatActivity implements UnlockScreenActivityInterface {
 
     private static final String TAG = "MessagingService";
+    public static Activity fa;
     private TextView tvName;
     private TextView tvInfo;
     private ImageView ivAvatar;
@@ -60,6 +62,8 @@ public class UnlockScreenActivity extends AppCompatActivity implements UnlockScr
         tvName = findViewById(R.id.tvName);
         tvInfo = findViewById(R.id.tvInfo);
         ivAvatar = findViewById(R.id.ivAvatar);
+
+        fa = this;
 
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
