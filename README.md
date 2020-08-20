@@ -12,11 +12,11 @@ Hello there! It's been a while since I first public version 1 of this library, w
 
 Luckily I got a client project which needs this feature again and now I have time to improve it and make sure all major features work. So here is most of it I guess:
 
-[x] More generic incoming call UI.
+- [x] More generic incoming call UI.
 
-[x] Work nicely with all application state (foreground, background, killed, locked).
+- [x] Work nicely with all application state (foreground, background, killed, locked).
 
-[x] More flexible APIs.
+- [x] More flexible APIs.
 
 *Thanks to [jpudysz](https://github.com/jpudysz/react-native-callkeep)'s folk of react-native-callkeep, version 2 is heavily depended on it.*
 
