@@ -16,6 +16,7 @@ import java.util.List;
 
 import androidx.appcompat.app.AppCompatActivity;
 import android.app.ActivityManager;
+import android.app.ActivityManager.RunningAppProcessInfo;
 
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.ReactContext;
@@ -199,7 +200,6 @@ public class UnlockScreenActivity extends AppCompatActivity implements UnlockScr
                 .emit(eventName, params);
     }
 
-    @Override
     public boolean foregrounded() {
         ActivityManager.RunningAppProcessInfo appProcessInfo = new ActivityManager.RunningAppProcessInfo();
         ActivityManager.getMyMemoryState(appProcessInfo);
