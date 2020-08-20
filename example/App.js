@@ -89,6 +89,9 @@ export function handleRemoteMessage(remoteMessage, isHeadless) {
       });
     }
     // Could also persist data here for later uses
+  } else if (remoteMessage?.notification?.title === 'Missed call') {
+    console.log('dismiss goes here');
+    IncomingCall.dismiss();
   }
 }
 
