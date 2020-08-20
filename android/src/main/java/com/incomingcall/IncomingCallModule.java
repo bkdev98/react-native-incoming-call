@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.app.Activity;
 import android.view.WindowManager;
+import android.content.Context;
+import android.util.Log;
 
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
@@ -15,6 +17,8 @@ public class IncomingCallModule extends ReactContextBaseJavaModule {
 
     public static ReactApplicationContext reactContext;
     public static Activity mainActivity;
+
+    private static final String TAG = "RNIC:IncomingCallModule";
 
     public IncomingCallModule(ReactApplicationContext context) {
         super(context);
@@ -59,6 +63,10 @@ public class IncomingCallModule extends ReactContextBaseJavaModule {
         //     reactContext.getApplicationContext().startActivity(i);
         // }
         assert activity != null;
+    }
+
+    private Context getAppContext() {
+        return this.reactContext.getApplicationContext();
     }
 
     @ReactMethod

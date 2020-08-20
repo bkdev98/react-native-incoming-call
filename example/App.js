@@ -81,7 +81,7 @@ export function handleRemoteMessage(remoteMessage, isHeadless) {
       DeviceEventEmitter.addListener('answerCall', payload => {
         // Start call action here
         console.log('answerCall', payload);
-        RNCallKeep.backToForeground();
+        IncomingCall.backToForeground();
       });
     }
     // Could also persist data here for later uses
