@@ -39,7 +39,7 @@ public class UnlockScreenActivity extends AppCompatActivity implements UnlockScr
     private Vibrator v = (Vibrator) IncomingCallModule.reactContext.getSystemService(Context.VIBRATOR_SERVICE);
     private long[] pattern = {0, 1000, 800};
     private MediaPlayer player = MediaPlayer.create(IncomingCallModule.reactContext, Settings.System.DEFAULT_RINGTONE_URI);
-    private Activity fa;
+    private static Activity fa;
 
     @Override
     public void onStart() {
