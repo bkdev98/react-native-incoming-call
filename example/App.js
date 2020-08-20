@@ -81,7 +81,11 @@ export function handleRemoteMessage(remoteMessage, isHeadless) {
       DeviceEventEmitter.addListener('answerCall', payload => {
         // Start call action here
         console.log('answerCall', payload);
-        IncomingCall.backToForeground();
+        if (payload.isHeadless) {
+          IncomingCall.openAppFromHeadlessMode(payload.uuid);
+        } else {
+          IncomingCall.backToForeground();
+        }
       });
     }
     // Could also persist data here for later uses
@@ -121,9 +125,8 @@ const App = () => {
   }, []);
 
   async function handleIncomingCall() {
-    const launchPayload = await IncomingCall.getLaunchParameters();
-    console.log('launchParameters', launchPayload);
-    IncomingCall.clearLaunchParameters();
+    const launchPayload = await IncomingCall.getExtrasFromHeadlessMode();
+    console.log('getExtrasFromHeadlessMode', launchPayload);
     if (launchPayload) {
       // Start call here
       setCallPayload(launchPayload);
