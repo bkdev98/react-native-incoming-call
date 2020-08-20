@@ -16,6 +16,7 @@ import java.util.List;
 
 import androidx.appcompat.app.AppCompatActivity;
 import android.app.ActivityManager;
+import android.app.ActivityManager.RunningAppProcessInfo;
 
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.ReactContext;
@@ -30,6 +31,7 @@ public class UnlockScreenActivity extends AppCompatActivity implements UnlockScr
 
     private static final String TAG = "MessagingService";
     private TextView tvName;
+    private TextView tvInfo;
     private ImageView ivAvatar;
     private String uuid = "";
     static boolean active = false;
@@ -56,6 +58,7 @@ public class UnlockScreenActivity extends AppCompatActivity implements UnlockScr
         setContentView(R.layout.activity_call_incoming);
 
         tvName = findViewById(R.id.tvName);
+        tvInfo = findViewById(R.id.tvInfo);
         ivAvatar = findViewById(R.id.ivAvatar);
 
         Bundle bundle = getIntent().getExtras();
@@ -66,6 +69,10 @@ public class UnlockScreenActivity extends AppCompatActivity implements UnlockScr
             if (bundle.containsKey("name")) {
                 String name = bundle.getString("name");
                 tvName.setText(name);
+            }
+            if (bundle.containsKey("info")) {
+                String info = bundle.getString("info");
+                tvInfo.setText(info);
             }
             if (bundle.containsKey("avatar")) {
                 String avatar = bundle.getString("avatar");
@@ -117,45 +124,26 @@ public class UnlockScreenActivity extends AppCompatActivity implements UnlockScr
 
     private void acceptDialing() {
         WritableMap params = Arguments.createMap();
-        params.putBoolean("done", true);
+        params.putBoolean("accept", true);
         params.putString("uuid", uuid);
-
-        if (IncomingCallModule.reactContext.hasCurrentActivity() && isAppOnForeground(IncomingCallModule.reactContext)) {
-            // App in foreground, send event for app to listen
-            sendEvent("answerCall", params);
-        } else {
-            // App in background or killed, start app and add launch params
-            String packageNames = IncomingCallModule.reactContext.getPackageName();
-            Intent launchIntent = IncomingCallModule.reactContext.getPackageManager().getLaunchIntentForPackage(packageNames);
-            String className = launchIntent.getComponent().getClassName();
-            try {
-                Class<?> activityClass = Class.forName(className);
-                Intent i = new Intent(IncomingCallModule.reactContext, activityClass);
-                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_REORDER_TO_FRONT | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                Bundle b = new Bundle();
-                b.putString("uuid", uuid);
-                i.putExtras(b);
-                IncomingCallModule.reactContext.startActivity(i);
-            } catch (Exception e) {
-                Log.e("RNIncomingCall", "Class not found", e);
-                return;
-            }
+        if (!IncomingCallModule.reactContext.hasCurrentActivity()) {
+            params.putBoolean("isHeadless", true);
         }
+
+        sendEvent("answerCall", params);
 
         finish();
     }
 
     private void dismissDialing() {
         WritableMap params = Arguments.createMap();
-        params.putBoolean("done", false);
+        params.putBoolean("accept", false);
         params.putString("uuid", uuid);
-
-        if (IncomingCallModule.reactContext.hasCurrentActivity()) {
-            // App in foreground or background, send event for app to listen
-            sendEvent("endCall", params);
-        } else {
-            // App killed, need to do something after
+        if (!IncomingCallModule.reactContext.hasCurrentActivity()) {
+            params.putBoolean("isHeadless", true);
         }
+
+        sendEvent("endCall", params);
 
         finish();
     }
@@ -192,25 +180,5 @@ public class UnlockScreenActivity extends AppCompatActivity implements UnlockScr
         IncomingCallModule.reactContext
                 .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
                 .emit(eventName, params);
-    }
-
-    private boolean isAppOnForeground(ReactApplicationContext context) {
-        /**
-         * We need to check if app is in foreground otherwise the app will crash.
-         * http://stackoverflow.com/questions/8489993/check-android-application-is-in-foreground-or-not
-         **/
-        ActivityManager activityManager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
-        List<ActivityManager.RunningAppProcessInfo> appProcesses = activityManager.getRunningAppProcesses();
-        if (appProcesses == null) {
-            return false;
-        }
-        final String packageName = context.getPackageName();
-        for (ActivityManager.RunningAppProcessInfo appProcess : appProcesses) {
-            if (appProcess.importance == ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND
-                    && appProcess.processName.equals(packageName)) {
-                return true;
-            }
-        }
-        return false;
     }
 }

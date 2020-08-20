@@ -71,9 +71,22 @@ export function handleRemoteMessage(remoteMessage, isHeadless) {
       IncomingCall.display(
         callUUID,
         'Quocs',
-        'Video Call',
         'https://avatars3.githubusercontent.com/u/16166195',
+        'Incomming Call'
       );
+      DeviceEventEmitter.addListener('endCall', payload => {
+        // End call action here
+        console.log('endCall', payload);
+      });
+      DeviceEventEmitter.addListener('answerCall', payload => {
+        // Start call action here
+        console.log('answerCall', payload);
+        if (payload.isHeadless) {
+          IncomingCall.openAppFromHeadlessMode(payload.uuid);
+        } else {
+          IncomingCall.backToForeground();
+        }
+      });
     }
     // Could also persist data here for later uses
   }
@@ -112,9 +125,8 @@ const App = () => {
   }, []);
 
   async function handleIncomingCall() {
-    const launchPayload = await IncomingCall.getLaunchParameters();
-    console.log('launchParameters', launchPayload);
-    IncomingCall.clearLaunchParameters();
+    const launchPayload = await IncomingCall.getExtrasFromHeadlessMode();
+    console.log('getExtrasFromHeadlessMode', launchPayload);
     if (launchPayload) {
       // Start call here
       setCallPayload(launchPayload);
@@ -203,7 +215,7 @@ const App = () => {
           </>
         ) : deviceToken ? (
           <>
-            <Image style={styles.image} source={{uri: 'ic_launcher'}} />
+            <Image style={styles.image} source={require('./images/waiting-call.jpg')} />
             <Text style={styles.header}>FCM Device Token</Text>
             <Text style={styles.text}>{deviceToken}</Text>
             <TouchableHighlight

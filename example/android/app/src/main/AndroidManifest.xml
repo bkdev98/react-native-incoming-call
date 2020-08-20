@@ -30,6 +30,7 @@
         android:turnScreenOn="true"
         android:showWhenLocked="true"
         android:exported="true"
+        android:launchMode="singleInstance"
         android:windowSoftInputMode="adjustResize">
       </activity>
       <activity
