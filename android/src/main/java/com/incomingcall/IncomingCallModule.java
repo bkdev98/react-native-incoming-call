@@ -6,6 +6,8 @@ import android.app.Activity;
 import android.view.WindowManager;
 import android.content.Context;
 import android.util.Log;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
@@ -35,7 +37,7 @@ public class IncomingCallModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void display(String uuid, String name, String avatar, String info) {
+    public void display(String uuid, String name, String avatar, String info, int timeout) {
         if (UnlockScreenActivity.active) {
             return;
         }
@@ -53,6 +55,16 @@ public class IncomingCallModule extends ReactContextBaseJavaModule {
             
             i.putExtras(bundle);
             reactContext.startActivity(i);
+
+            if (timeout != null && timeout > 0) {
+                new Timer().schedule(new TimerTask() {          
+                    @Override
+                    public void run() {
+                        // this code will be executed after timeout seconds
+                        UnlockScreenActivity.dismissIncoming();
+                    }
+                }, timeout);
+            }
         }
     }
 
