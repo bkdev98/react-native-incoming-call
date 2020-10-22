@@ -56,7 +56,7 @@ public class IncomingCallModule extends ReactContextBaseJavaModule {
             i.putExtras(bundle);
             reactContext.startActivity(i);
 
-            if (timeout != null && timeout > 0) {
+            if (timeout > 0) {
                 new Timer().schedule(new TimerTask() {          
                     @Override
                     public void run() {
