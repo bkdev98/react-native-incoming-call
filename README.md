@@ -99,7 +99,8 @@ messaging().setBackgroundMessageHandler(async remoteMessage => {
       'callUUIDv4', // Call UUID v4
       'Quocs', // Username
       'https://avatars3.githubusercontent.com/u/16166195', // Avatar URL
-      'Incomming Call' // Info text
+      'Incomming Call', // Info text
+      20000 // Timeout for end call after 20s
     );
   } else if (remoteMessage?.notification?.title === 'Missed Call') {
     // Terminate incoming activity. Should be called when call expired.
