@@ -99,6 +99,7 @@ public class UnlockScreenActivity extends AppCompatActivity implements UnlockScr
                 try {
                     v.cancel();
                     player.stop();
+                    player.prepareAsync();
                     acceptDialing();
                 } catch (Exception e) {
                     WritableMap params = Arguments.createMap();
@@ -115,6 +116,7 @@ public class UnlockScreenActivity extends AppCompatActivity implements UnlockScr
             public void onClick(View view) {
                 v.cancel();
                 player.stop();
+                player.prepareAsync();
                 dismissDialing();
             }
         });
@@ -129,6 +131,7 @@ public class UnlockScreenActivity extends AppCompatActivity implements UnlockScr
     public static void dismissIncoming() {
         v.cancel();
         player.stop();
+        player.prepareAsync();
         fa.finish();
     }
 
