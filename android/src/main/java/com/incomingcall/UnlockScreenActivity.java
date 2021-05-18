@@ -1,6 +1,8 @@
 package com.incomingcall;
 
+import android.app.KeyguardManager;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.WindowManager;
@@ -142,9 +144,20 @@ public class UnlockScreenActivity extends AppCompatActivity implements UnlockScr
         if (!IncomingCallModule.reactContext.hasCurrentActivity()) {
             params.putBoolean("isHeadless", true);
         }
+        KeyguardManager mKeyguardManager = (KeyguardManager) getSystemService(Context.KEYGUARD_SERVICE);
+
+        if (mKeyguardManager.isDeviceLocked()) {
+          if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            mKeyguardManager.requestDismissKeyguard(this, new KeyguardManager.KeyguardDismissCallback() {
+              @Override
+              public void onDismissSucceeded() {
+                super.onDismissSucceeded();
+              }
+            });
+          }
+        }
 
         sendEvent("answerCall", params);
-
         finish();
     }
 
