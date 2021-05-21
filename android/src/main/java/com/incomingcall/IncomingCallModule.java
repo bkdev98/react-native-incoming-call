@@ -24,6 +24,7 @@ public class IncomingCallModule extends ReactContextBaseJavaModule {
 
     private static final String TAG = "RNIC:IncomingCallModule";
     private WritableMap headlessExtras;
+    private Timer t;
 
     public IncomingCallModule(ReactApplicationContext context) {
         super(context);
@@ -47,6 +48,7 @@ public class IncomingCallModule extends ReactContextBaseJavaModule {
             bundle.putString("name", name);
             bundle.putString("avatar", avatar);
             bundle.putString("info", info);
+            bundle.putInt("timeout", timeout);
             Intent i = new Intent(reactContext, UnlockScreenActivity.class);
             i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_REORDER_TO_FRONT | Intent.FLAG_ACTIVITY_SINGLE_TOP);
             i.addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED +
@@ -55,16 +57,7 @@ public class IncomingCallModule extends ReactContextBaseJavaModule {
             
             i.putExtras(bundle);
             reactContext.startActivity(i);
-
-            if (timeout > 0) {
-                new Timer().schedule(new TimerTask() {          
-                    @Override
-                    public void run() {
-                        // this code will be executed after timeout seconds
-                        UnlockScreenActivity.dismissIncoming();
-                    }
-                }, timeout);
-            }
+            
         }
     }
 
