@@ -24,7 +24,6 @@ public class IncomingCallModule extends ReactContextBaseJavaModule {
 
     private static final String TAG = "RNIC:IncomingCallModule";
     private WritableMap headlessExtras;
-    private Timer t;
 
     public IncomingCallModule(ReactApplicationContext context) {
         super(context);
