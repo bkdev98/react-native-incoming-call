@@ -17,7 +17,6 @@ import android.provider.Settings;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
-
 import android.app.Activity;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -47,7 +46,6 @@ public class UnlockScreenActivity extends AppCompatActivity implements UnlockScr
     private static MediaPlayer player = MediaPlayer.create(IncomingCallModule.reactContext.getApplicationContext(), Settings.System.DEFAULT_RINGTONE_URI);
     private static Activity fa;
     private Timer timer;
-
 
     @Override
     public void onStart() {
