@@ -17,6 +17,7 @@ import android.provider.Settings;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
+
 import android.app.Activity;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -43,9 +44,10 @@ public class UnlockScreenActivity extends AppCompatActivity implements UnlockScr
     static boolean active = false;
     private static Vibrator v = (Vibrator) IncomingCallModule.reactContext.getSystemService(Context.VIBRATOR_SERVICE);
     private long[] pattern = {0, 1000, 800};
-    private static MediaPlayer player = MediaPlayer.create(IncomingCallModule.reactContext.getApplicationContext(), Settings.System.DEFAULT_RINGTONE_URI);
+    private static MediaPlayer player = MediaPlayer.create(IncomingCallModule.reactContext, Settings.System.DEFAULT_RINGTONE_URI);
     private static Activity fa;
     private Timer timer;
+
 
     @Override
     public void onStart() {
@@ -148,11 +150,11 @@ public class UnlockScreenActivity extends AppCompatActivity implements UnlockScr
         // Dont back
     }
 
-    public static void dismissIncoming() {
+    public void dismissIncoming() {
         v.cancel();
         player.stop();
         player.prepareAsync();
-        fa.finish();
+        dismissDialing();
     }
 
     private void acceptDialing() {
