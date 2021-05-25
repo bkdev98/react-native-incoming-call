@@ -6,9 +6,6 @@ import android.app.Activity;
 import android.view.WindowManager;
 import android.content.Context;
 import android.util.Log;
-import java.util.Timer;
-import java.util.TimerTask;
-
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
@@ -58,17 +55,6 @@ public class IncomingCallModule extends ReactContextBaseJavaModule {
             reactContext.startActivity(i);
             
         }
-    }
-
-    @ReactMethod
-    public void dismiss() {
-        // final Activity activity = reactContext.getCurrentActivity();
-
-        // assert activity != null;
-
-        UnlockScreenActivity.dismissIncoming();
-
-        return;
     }
 
     private Context getAppContext() {
