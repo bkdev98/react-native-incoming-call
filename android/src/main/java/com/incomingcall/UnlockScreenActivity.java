@@ -14,9 +14,7 @@ import android.widget.TextView;
 import android.view.View;
 import android.os.Vibrator;
 import android.content.Context;
-import android.media.MediaPlayer;
-import android.provider.Settings;
-import java.util.List;
+
 import java.util.Timer;
 import java.util.TimerTask;
 import android.app.Activity;
@@ -108,7 +106,7 @@ public class UnlockScreenActivity extends AppCompatActivity implements UnlockScr
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN | WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON | WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON
                 | WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED | WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
 
-        ringPhone();
+        startRinging();
 
 
         AnimateImage acceptCallBtn = findViewById(R.id.ivAcceptCall);
@@ -116,8 +114,7 @@ public class UnlockScreenActivity extends AppCompatActivity implements UnlockScr
             @Override
             public void onClick(View view) {
                 try {
-                    vibrator.cancel();
-                    ringtone.stop();
+                    stopRinging();
                     acceptDialing();
                 } catch (Exception e) {
                     WritableMap params = Arguments.createMap();
@@ -145,13 +142,12 @@ public class UnlockScreenActivity extends AppCompatActivity implements UnlockScr
         // Dont back
     }
 
-    public static void dismissIncoming() {
-        vibrator.cancel();
-        ringtone.stop();
-        fa.finish();
+    public void dismissIncoming() {
+        stopRinging();
+        dismissDialing();
     }
 
-    private void ringPhone(){
+    private void startRinging() {
       long[] pattern = {0, 1000, 800};
       vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
       int ringerMode = ((AudioManager) getSystemService(Context.AUDIO_SERVICE)).getRingerMode();
@@ -169,8 +165,16 @@ public class UnlockScreenActivity extends AppCompatActivity implements UnlockScr
       ringtone.play();
     }
 
+    private void stopRinging() {
+      if (vibrator != null){
+        vibrator.cancel();
+      }
+      int ringerMode = ((AudioManager) getSystemService(Context.AUDIO_SERVICE)).getRingerMode();
+      if(ringerMode == AudioManager.RINGER_MODE_SILENT) return;
+      ringtone.stop();
+    }
 
-  private void acceptDialing() {
+    private void acceptDialing() {
         WritableMap params = Arguments.createMap();
         params.putBoolean("accept", true);
         params.putString("uuid", uuid);
