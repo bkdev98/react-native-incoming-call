@@ -37,7 +37,6 @@ public class UnlockScreenActivity extends AppCompatActivity implements UnlockScr
     private String uuid = "";
     static boolean active = false;
     private static Vibrator vibrator;
-    private AudioManager am;
     private static Ringtone ringtone;
     private static Activity fa;
     private Timer timer;
@@ -70,8 +69,6 @@ public class UnlockScreenActivity extends AppCompatActivity implements UnlockScr
         super.onCreate(savedInstanceState);
 
         fa = this;
-        am = (AudioManager)getSystemService(Context.AUDIO_SERVICE);
-
         setContentView(R.layout.activity_call_incoming);
 
         tvName = findViewById(R.id.tvName);
