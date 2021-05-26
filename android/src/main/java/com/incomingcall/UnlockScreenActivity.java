@@ -129,8 +129,7 @@ public class UnlockScreenActivity extends AppCompatActivity implements UnlockScr
         rejectCallBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                vibrator.cancel();
-                ringtone.stop();
+                stopRinging();
                 dismissDialing();
             }
         });
