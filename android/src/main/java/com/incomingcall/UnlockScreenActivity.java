@@ -15,6 +15,9 @@ import android.content.Context;
 import android.media.MediaPlayer;
 import android.provider.Settings;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
+
 import android.app.Activity;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -36,16 +39,29 @@ public class UnlockScreenActivity extends AppCompatActivity implements UnlockScr
     private TextView tvName;
     private TextView tvInfo;
     private ImageView ivAvatar;
+    private Integer timeout = 0;
     private String uuid = "";
     static boolean active = false;
     private static Vibrator v = (Vibrator) IncomingCallModule.reactContext.getSystemService(Context.VIBRATOR_SERVICE);
     private long[] pattern = {0, 1000, 800};
-    private static MediaPlayer player = MediaPlayer.create(IncomingCallModule.reactContext.getApplicationContext(), Settings.System.DEFAULT_RINGTONE_URI);
+    private static MediaPlayer player = MediaPlayer.create(IncomingCallModule.reactContext, Settings.System.DEFAULT_RINGTONE_URI);
     private static Activity fa;
+    private Timer timer;
+
 
     @Override
     public void onStart() {
         super.onStart();
+        if (this.timeout > 0) {
+              this.timer = new Timer();
+              this.timer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    // this code will be executed after timeout seconds
+                    dismissIncoming();
+                }
+            }, timeout);
+        }
         active = true;
     }
 
@@ -86,6 +102,10 @@ public class UnlockScreenActivity extends AppCompatActivity implements UnlockScr
                     Picasso.get().load(avatar).transform(new CircleTransform()).into(ivAvatar);
                 }
             }
+            if (bundle.containsKey("timeout")) {
+                this.timeout = bundle.getInt("timeout");
+            }
+            else this.timeout = 0;
         }
 
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN | WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON | WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON
@@ -130,17 +150,20 @@ public class UnlockScreenActivity extends AppCompatActivity implements UnlockScr
         // Dont back
     }
 
-    public static void dismissIncoming() {
+    public void dismissIncoming() {
         v.cancel();
         player.stop();
         player.prepareAsync();
-        fa.finish();
+        dismissDialing();
     }
 
     private void acceptDialing() {
         WritableMap params = Arguments.createMap();
         params.putBoolean("accept", true);
         params.putString("uuid", uuid);
+        if (timer != null){
+          timer.cancel();
+        }
         if (!IncomingCallModule.reactContext.hasCurrentActivity()) {
             params.putBoolean("isHeadless", true);
         }
@@ -165,6 +188,9 @@ public class UnlockScreenActivity extends AppCompatActivity implements UnlockScr
         WritableMap params = Arguments.createMap();
         params.putBoolean("accept", false);
         params.putString("uuid", uuid);
+        if (timer != null) {
+          timer.cancel();
+        }
         if (!IncomingCallModule.reactContext.hasCurrentActivity()) {
             params.putBoolean("isHeadless", true);
         }

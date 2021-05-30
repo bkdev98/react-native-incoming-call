@@ -6,9 +6,6 @@ import android.app.Activity;
 import android.view.WindowManager;
 import android.content.Context;
 import android.util.Log;
-import java.util.Timer;
-import java.util.TimerTask;
-
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
@@ -47,6 +44,7 @@ public class IncomingCallModule extends ReactContextBaseJavaModule {
             bundle.putString("name", name);
             bundle.putString("avatar", avatar);
             bundle.putString("info", info);
+            bundle.putInt("timeout", timeout);
             Intent i = new Intent(reactContext, UnlockScreenActivity.class);
             i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_REORDER_TO_FRONT | Intent.FLAG_ACTIVITY_SINGLE_TOP);
             i.addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED +
@@ -55,28 +53,8 @@ public class IncomingCallModule extends ReactContextBaseJavaModule {
             
             i.putExtras(bundle);
             reactContext.startActivity(i);
-
-            if (timeout > 0) {
-                new Timer().schedule(new TimerTask() {          
-                    @Override
-                    public void run() {
-                        // this code will be executed after timeout seconds
-                        UnlockScreenActivity.dismissIncoming();
-                    }
-                }, timeout);
-            }
+            
         }
-    }
-
-    @ReactMethod
-    public void dismiss() {
-        // final Activity activity = reactContext.getCurrentActivity();
-
-        // assert activity != null;
-
-        UnlockScreenActivity.dismissIncoming();
-
-        return;
     }
 
     private Context getAppContext() {
