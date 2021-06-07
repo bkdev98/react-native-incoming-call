@@ -40,14 +40,20 @@ public class UnlockScreenActivity extends AppCompatActivity implements UnlockScr
     private static Ringtone ringtone;
     private static Activity fa;
     private Timer timer;
+    static UnlockScreenActivity instance;
+
+
+    public static UnlockScreenActivity getInstance() {
+      return instance;
+    }
 
 
     @Override
     public void onStart() {
         super.onStart();
         if (this.timeout > 0) {
-              this.timer = new Timer();
-              this.timer.schedule(new TimerTask() {
+              timer = new Timer();
+              timer.schedule(new TimerTask() {
                 @Override
                 public void run() {
                     // this code will be executed after timeout seconds
@@ -56,6 +62,7 @@ public class UnlockScreenActivity extends AppCompatActivity implements UnlockScr
             }, timeout);
         }
         active = true;
+        instance = this;
     }
 
     @Override
@@ -166,7 +173,7 @@ public class UnlockScreenActivity extends AppCompatActivity implements UnlockScr
         vibrator.cancel();
       }
       int ringerMode = ((AudioManager) getSystemService(Context.AUDIO_SERVICE)).getRingerMode();
-      if(ringerMode == AudioManager.RINGER_MODE_SILENT) return;
+      if(ringerMode != AudioManager.RINGER_MODE_NORMAL) return;
       ringtone.stop();
     }
 
