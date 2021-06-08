@@ -50,11 +50,19 @@ public class IncomingCallModule extends ReactContextBaseJavaModule {
             i.addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED +
             WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD +
             WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
-            
             i.putExtras(bundle);
             reactContext.startActivity(i);
             
         }
+    }
+
+    @ReactMethod
+    public void dismiss() {
+
+        if (UnlockScreenActivity.active) {
+           UnlockScreenActivity.getInstance().dismissIncoming();
+        }
+        return;
     }
 
     private Context getAppContext() {
