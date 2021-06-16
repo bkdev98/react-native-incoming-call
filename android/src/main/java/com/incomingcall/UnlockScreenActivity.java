@@ -11,8 +11,10 @@ import android.widget.TextView;
 import android.view.View;
 import android.net.Uri;
 import android.os.Vibrator;
+import android.os.VibrationEffect;
 import android.content.Context;
 import android.media.MediaPlayer;
+import android.media.AudioAttributes;
 import android.provider.Settings;
 import java.util.List;
 import java.util.Timer;
@@ -111,7 +113,19 @@ public class UnlockScreenActivity extends AppCompatActivity implements UnlockScr
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN | WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON | WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON
                 | WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED | WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
 
-        v.vibrate(pattern, 0);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            AudioAttributes audioAttributes = new AudioAttributes.Builder()
+                .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+                .setUsage(AudioAttributes.USAGE_ALARM)
+                .build();
+            VibrationEffect ve = VibrationEffect.createWaveform(
+                pattern,
+                0
+            );
+            v.vibrate(ve, audioAttributes);    
+        } else {
+            v.vibrate(pattern, 0);
+        }
         player.start();
 
         AnimateImage acceptCallBtn = findViewById(R.id.ivAcceptCall);
