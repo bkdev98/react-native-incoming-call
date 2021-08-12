@@ -1,4 +1,4 @@
 <resources>
-    <string name="accept">Video</string>
-    <string name="decline">Decline</string>
+    <string name="accept">Aceitar</string>
+    <string name="decline">Recusar</string>
 </resources>
