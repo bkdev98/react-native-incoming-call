@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="avatarWrapper">
+        <item name="android:layout_width">170dp</item>
+        <item name="android:layout_height">170dp</item>
+    </style>
+    <style name="buttonWrapper">
+        <item name="android:layout_marginBottom">60dp</item>
+    </style>
+    <style name="tvName">
+        <item name="android:textSize">22sp</item>
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textColor">#FFFFFF</item>
+    </style>
+    <style name="tvInfo">
+        <item name="android:textSize">14sp</item>
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textColor">#ADADAD</item>
+    </style>
+    <style name="ivAcceptCall">
+        <item name="android:layout_width">60sp</item>
+        <item name="android:layout_height">60sp</item>
+    </style>
+    <style name="ivDeclineCall">
+        <item name="android:layout_width">60sp</item>
+        <item name="android:layout_height">60sp</item>
+    </style>
+</resources>

@@ -16,6 +16,7 @@ import android.os.Vibrator;
 import android.content.Context;
 import android.media.MediaPlayer;
 import android.provider.Settings;
+import android.graphics.Typeface;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -96,6 +97,12 @@ public class UnlockScreenActivity extends AppCompatActivity implements UnlockScr
             if (bundle.containsKey("info")) {
                 String info = bundle.getString("info");
                 tvInfo.setText(info);
+            }
+            if (bundle.containsKey("font")) {
+                String font = bundle.getString("font");
+                Typeface tf = Typeface.createFromAsset(getAssets(), font);
+                tvName.setTypeface(tf);
+                tvInfo.setTypeface(tf);
             }
             if (bundle.containsKey("avatar")) {
                 String avatar = bundle.getString("avatar");

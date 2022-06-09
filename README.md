@@ -84,7 +84,7 @@ useEffect(() => {
 }, []);
 ```
 
-In `index.js` or anywhere firebase background handler lies: 
+In `index.js` or anywhere firebase background handler lies:
 
 ```javascript
 import messaging from '@react-native-firebase/messaging';
@@ -95,13 +95,13 @@ messaging().setBackgroundMessageHandler(async remoteMessage => {
   // Receive remote message
   if (remoteMessage?.notification?.title === 'Incoming Call') {
     // Display incoming call activity.
-    IncomingCall.display(
-      'callUUIDv4', // Call UUID v4
-      'Quocs', // Username
-      'https://avatars3.githubusercontent.com/u/16166195', // Avatar URL
-      'Incomming Call', // Info text
-      20000 // Timeout for end call after 20s
-    );
+    IncomingCall.display({
+      uuid: 'callUUIDv4', // Call UUID v4
+      name: 'Quocs', // Username
+      avatar: 'https://avatars3.githubusercontent.com/u/16166195', // Avatar URL
+      info: 'Incomming Call', // Info text
+      timeout: 20000 // Timeout for end call after 20s
+    });
   } else if (remoteMessage?.notification?.title === 'Missed Call') {
     // Terminate incoming activity. Should be called when call expired.
     IncomingCall.dismiss();
