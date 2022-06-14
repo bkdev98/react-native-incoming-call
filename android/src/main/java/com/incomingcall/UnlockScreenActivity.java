@@ -1,34 +1,31 @@
 package com.incomingcall;
 
 import android.app.KeyguardManager;
-import android.content.Intent;
+import android.media.AudioManager;
+import android.media.Ringtone;
+import android.media.RingtoneManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.VibrationEffect;
 import android.util.Log;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.view.View;
-import android.net.Uri;
 import android.os.Vibrator;
 import android.content.Context;
 import android.media.MediaPlayer;
 import android.provider.Settings;
+import android.graphics.Typeface;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
-
 import android.app.Activity;
-
 import androidx.appcompat.app.AppCompatActivity;
-import android.app.ActivityManager;
-import android.app.ActivityManager.RunningAppProcessInfo;
 
 import com.facebook.react.bridge.Arguments;
-import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.WritableMap;
-import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
 
 import com.squareup.picasso.Picasso;
@@ -41,20 +38,26 @@ public class UnlockScreenActivity extends AppCompatActivity implements UnlockScr
     private ImageView ivAvatar;
     private Integer timeout = 0;
     private String uuid = "";
+    private String ringtoneSound;
     static boolean active = false;
-    private static Vibrator v = (Vibrator) IncomingCallModule.reactContext.getSystemService(Context.VIBRATOR_SERVICE);
-    private long[] pattern = {0, 1000, 800};
-    private static MediaPlayer player = MediaPlayer.create(IncomingCallModule.reactContext, Settings.System.DEFAULT_RINGTONE_URI);
+    private static Vibrator vibrator;
+    private static Ringtone ringtone;
     private static Activity fa;
     private Timer timer;
+    static UnlockScreenActivity instance;
+
+
+    public static UnlockScreenActivity getInstance() {
+      return instance;
+    }
 
 
     @Override
     public void onStart() {
         super.onStart();
         if (this.timeout > 0) {
-              this.timer = new Timer();
-              this.timer.schedule(new TimerTask() {
+              timer = new Timer();
+              timer.schedule(new TimerTask() {
                 @Override
                 public void run() {
                     // this code will be executed after timeout seconds
@@ -63,6 +66,7 @@ public class UnlockScreenActivity extends AppCompatActivity implements UnlockScr
             }, timeout);
         }
         active = true;
+        instance = this;
     }
 
     @Override
@@ -76,7 +80,6 @@ public class UnlockScreenActivity extends AppCompatActivity implements UnlockScr
         super.onCreate(savedInstanceState);
 
         fa = this;
-
         setContentView(R.layout.activity_call_incoming);
 
         tvName = findViewById(R.id.tvName);
@@ -85,18 +88,28 @@ public class UnlockScreenActivity extends AppCompatActivity implements UnlockScr
 
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
-            if (bundle.containsKey("uuid")) {
+            if (bundle.getString("uuid") != null) {
                 uuid = bundle.getString("uuid");
             }
-            if (bundle.containsKey("name")) {
+            if (bundle.getString("name") != null) {
                 String name = bundle.getString("name");
                 tvName.setText(name);
             }
-            if (bundle.containsKey("info")) {
+            if (bundle.getString("info") != null) {
                 String info = bundle.getString("info");
                 tvInfo.setText(info);
             }
-            if (bundle.containsKey("avatar")) {
+            if (bundle.getString("font") != null) {
+                String font = bundle.getString("font");
+                Typeface tf = Typeface.createFromAsset(getAssets(), font);
+                tvName.setTypeface(tf);
+                tvInfo.setTypeface(tf);
+            }
+            if (bundle.getString("ringtone") != null) {
+                String filename = bundle.getString("ringtone");
+                ringtoneSound = filename.contains(".") ? filename.substring(0, filename.lastIndexOf('.')) : filename;
+            }
+            if (bundle.getString("avatar") != null) {
                 String avatar = bundle.getString("avatar");
                 if (avatar != null) {
                     Picasso.get().load(avatar).transform(new CircleTransform()).into(ivAvatar);
@@ -105,23 +118,21 @@ public class UnlockScreenActivity extends AppCompatActivity implements UnlockScr
             if (bundle.containsKey("timeout")) {
                 this.timeout = bundle.getInt("timeout");
             }
-            else this.timeout = 0;
         }
 
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN | WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON | WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON
                 | WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED | WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
 
-        v.vibrate(pattern, 0);
-        player.start();
+        ringPhone();
+
 
         AnimateImage acceptCallBtn = findViewById(R.id.ivAcceptCall);
         acceptCallBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 try {
-                    v.cancel();
-                    player.stop();
-                    player.prepareAsync();
+                    vibrator.cancel();
+                    ringtone.stop();
                     acceptDialing();
                 } catch (Exception e) {
                     WritableMap params = Arguments.createMap();
@@ -136,9 +147,7 @@ public class UnlockScreenActivity extends AppCompatActivity implements UnlockScr
         rejectCallBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                v.cancel();
-                player.stop();
-                player.prepareAsync();
+                stopRinging();
                 dismissDialing();
             }
         });
@@ -157,7 +166,42 @@ public class UnlockScreenActivity extends AppCompatActivity implements UnlockScr
         dismissDialing();
     }
 
-    private void acceptDialing() {
+    private void ringPhone(){
+      long[] pattern = {0, 1000, 800};
+      vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+      int ringerMode = ((AudioManager) getSystemService(Context.AUDIO_SERVICE)).getRingerMode();
+      if(ringerMode == AudioManager.RINGER_MODE_SILENT) return;
+
+      if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+        VibrationEffect vibe = VibrationEffect.createWaveform(pattern, 2);
+        vibrator.vibrate(vibe);
+      }else{
+        vibrator.vibrate(pattern, 0);
+      }
+      if(ringerMode == AudioManager.RINGER_MODE_VIBRATE) return;
+
+      if (ringtoneSound != null) {
+        Uri ringtoneUri = Uri.parse("android.resource://" + getPackageName() + "/raw/" + ringtoneSound);
+        ringtone = RingtoneManager.getRingtone(this, ringtoneUri);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+          ringtone.setLooping(true);
+        }
+      } else {
+        ringtone = RingtoneManager.getRingtone(this, RingtoneManager.getActualDefaultRingtoneUri(getApplicationContext(), RingtoneManager.TYPE_RINGTONE));
+      }
+      ringtone.play();
+    }
+
+    private void stopRinging() {
+      if (vibrator != null){
+        vibrator.cancel();
+      }
+      int ringerMode = ((AudioManager) getSystemService(Context.AUDIO_SERVICE)).getRingerMode();
+      if(ringerMode != AudioManager.RINGER_MODE_NORMAL) return;
+      ringtone.stop();
+    }
+
+  private void acceptDialing() {
         WritableMap params = Arguments.createMap();
         params.putBoolean("accept", true);
         params.putString("uuid", uuid);

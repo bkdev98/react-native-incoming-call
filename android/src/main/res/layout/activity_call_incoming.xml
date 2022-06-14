@@ -17,8 +17,7 @@
     >
 
         <RelativeLayout
-            android:layout_width="170dp"
-            android:layout_height="170dp"
+            style="@style/avatarWrapper"
         >
             <ImageView
                 android:id="@+id/ivAvatar"
@@ -58,9 +57,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:textSize="22sp"
-            android:fontFamily="sans-serif"
-            android:textColor="#FFFFFF"
+            style="@style/tvName"
         />
 
         <TextView
@@ -68,9 +65,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:textSize="14sp"
-            android:fontFamily="sans-serif"
-            android:textColor="#ADADAD"
+            style="@style/tvInfo"
         />
 
     </LinearLayout>
@@ -81,7 +76,7 @@
         android:orientation="horizontal"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="60dp"
+        style="@style/buttonWrapper"
     >
 
         <LinearLayout
@@ -95,10 +90,9 @@
         >
             <com.incomingcall.AnimateImage
                 android:id="@+id/ivDeclineCall"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
                 android:scaleType="centerInside"
                 android:src="@drawable/ic_decline_call"
+                style="@style/ivDeclineCall"
             />
             <TextView
                 android:id="@+id/tvDecline"
@@ -123,10 +117,9 @@
         >
             <com.incomingcall.AnimateImage
                 android:id="@+id/ivAcceptCall"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
                 android:scaleType="centerInside"
                 android:src="@drawable/ic_accept_call"
+                style="@style/ivAcceptCall"
             />
             <TextView
                 android:id="@+id/tvAccept"

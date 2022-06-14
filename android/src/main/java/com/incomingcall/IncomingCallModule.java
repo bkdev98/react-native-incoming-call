@@ -11,6 +11,7 @@ import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.Callback;
 import com.facebook.react.bridge.Promise;
+import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.bridge.WritableNativeMap;
 
@@ -34,27 +35,38 @@ public class IncomingCallModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void display(String uuid, String name, String avatar, String info, int timeout) {
+    public void display(ReadableMap options) {
         if (UnlockScreenActivity.active) {
             return;
         }
         if (reactContext != null) {
             Bundle bundle = new Bundle();
-            bundle.putString("uuid", uuid);
-            bundle.putString("name", name);
-            bundle.putString("avatar", avatar);
-            bundle.putString("info", info);
-            bundle.putInt("timeout", timeout);
+            bundle.putString("uuid", options.getString("uuid"));
+            bundle.putString("name", options.getString("name"));
+            bundle.putString("avatar", options.getString("avatar"));
+            bundle.putString("info", options.getString("info"));
+            bundle.putString("ringtone", options.getString("ringtone"));
+            bundle.putString("font", options.getString("font"));
+            bundle.putInt("timeout", options.getInt("timeout"));
             Intent i = new Intent(reactContext, UnlockScreenActivity.class);
             i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_REORDER_TO_FRONT | Intent.FLAG_ACTIVITY_SINGLE_TOP);
             i.addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED +
             WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD +
             WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
-            
+
             i.putExtras(bundle);
             reactContext.startActivity(i);
-            
+
         }
+    }
+
+    @ReactMethod
+    public void dismiss() {
+
+        if (UnlockScreenActivity.active) {
+           UnlockScreenActivity.getInstance().dismissIncoming();
+        }
+        return;
     }
 
     private Context getAppContext() {
