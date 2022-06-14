@@ -38,6 +38,7 @@ public class UnlockScreenActivity extends AppCompatActivity implements UnlockScr
     private ImageView ivAvatar;
     private Integer timeout = 0;
     private String uuid = "";
+    private String ringtoneSound;
     static boolean active = false;
     private static Vibrator vibrator;
     private static Ringtone ringtone;
@@ -87,24 +88,28 @@ public class UnlockScreenActivity extends AppCompatActivity implements UnlockScr
 
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
-            if (bundle.containsKey("uuid")) {
+            if (bundle.getString("uuid") != null) {
                 uuid = bundle.getString("uuid");
             }
-            if (bundle.containsKey("name")) {
+            if (bundle.getString("name") != null) {
                 String name = bundle.getString("name");
                 tvName.setText(name);
             }
-            if (bundle.containsKey("info")) {
+            if (bundle.getString("info") != null) {
                 String info = bundle.getString("info");
                 tvInfo.setText(info);
             }
-            if (bundle.containsKey("font")) {
+            if (bundle.getString("font") != null) {
                 String font = bundle.getString("font");
                 Typeface tf = Typeface.createFromAsset(getAssets(), font);
                 tvName.setTypeface(tf);
                 tvInfo.setTypeface(tf);
             }
-            if (bundle.containsKey("avatar")) {
+            if (bundle.getString("ringtone") != null) {
+                String filename = bundle.getString("ringtone");
+                ringtoneSound = filename.contains(".") ? filename.substring(0, filename.lastIndexOf('.')) : filename;
+            }
+            if (bundle.getString("avatar") != null) {
                 String avatar = bundle.getString("avatar");
                 if (avatar != null) {
                     Picasso.get().load(avatar).transform(new CircleTransform()).into(ivAvatar);
@@ -113,7 +118,6 @@ public class UnlockScreenActivity extends AppCompatActivity implements UnlockScr
             if (bundle.containsKey("timeout")) {
                 this.timeout = bundle.getInt("timeout");
             }
-            else this.timeout = 0;
         }
 
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN | WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON | WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON
@@ -176,7 +180,15 @@ public class UnlockScreenActivity extends AppCompatActivity implements UnlockScr
       }
       if(ringerMode == AudioManager.RINGER_MODE_VIBRATE) return;
 
-      ringtone = RingtoneManager.getRingtone(this, RingtoneManager.getActualDefaultRingtoneUri(getApplicationContext(), RingtoneManager.TYPE_RINGTONE));
+      if (ringtoneSound != null) {
+        Uri ringtoneUri = Uri.parse("android.resource://" + getPackageName() + "/raw/" + ringtoneSound);
+        ringtone = RingtoneManager.getRingtone(this, ringtoneUri);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+          ringtone.setLooping(true);
+        }
+      } else {
+        ringtone = RingtoneManager.getRingtone(this, RingtoneManager.getActualDefaultRingtoneUri(getApplicationContext(), RingtoneManager.TYPE_RINGTONE));
+      }
       ringtone.play();
     }
 

@@ -45,6 +45,7 @@ public class IncomingCallModule extends ReactContextBaseJavaModule {
             bundle.putString("name", options.getString("name"));
             bundle.putString("avatar", options.getString("avatar"));
             bundle.putString("info", options.getString("info"));
+            bundle.putString("ringtone", options.getString("ringtone"));
             bundle.putString("font", options.getString("font"));
             bundle.putInt("timeout", options.getInt("timeout"));
             Intent i = new Intent(reactContext, UnlockScreenActivity.class);
