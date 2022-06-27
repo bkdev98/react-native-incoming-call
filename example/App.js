@@ -68,12 +68,12 @@ export function handleRemoteMessage(remoteMessage, isHeadless) {
         }
       });
     } else {
-      IncomingCall.display(
-        callUUID,
-        'Quocs',
-        'https://avatars3.githubusercontent.com/u/16166195',
-        'Incomming Call'
-      );
+      IncomingCall.display({
+        uuid: callUUID,
+        name: 'Quocs',
+        avatar: 'https://avatars3.githubusercontent.com/u/16166195',
+        info: 'Incomming Call'
+      });
       DeviceEventEmitter.addListener('endCall', payload => {
         // End call action here
         console.log('endCall', payload);
