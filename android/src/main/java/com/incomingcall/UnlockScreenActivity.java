@@ -39,6 +39,7 @@ public class UnlockScreenActivity extends AppCompatActivity implements UnlockScr
     private static final String TAG = "MessagingService";
     private TextView tvName;
     private TextView tvInfo;
+    private TextView tvSource;
     private ImageView ivAvatar;
     private Integer timeout = 0;
     private String uuid = "";
@@ -82,6 +83,7 @@ public class UnlockScreenActivity extends AppCompatActivity implements UnlockScr
 
         tvName = findViewById(R.id.tvName);
         tvInfo = findViewById(R.id.tvInfo);
+        tvSource = findViewById(R.id.tvSource);
         ivAvatar = findViewById(R.id.ivAvatar);
 
         Bundle bundle = getIntent().getExtras();
@@ -102,6 +104,11 @@ public class UnlockScreenActivity extends AppCompatActivity implements UnlockScr
                 Typeface tf = Typeface.createFromAsset(getAssets(), font);
                 tvName.setTypeface(tf);
                 tvInfo.setTypeface(tf);
+                tvSource.setTypeface(tf);
+            }
+            if (bundle.containsKey("source")) {
+                String source = bundle.getString("source");
+                tvSource.setText(source);
             }
             if (bundle.containsKey("avatar")) {
                 String avatar = bundle.getString("avatar");
