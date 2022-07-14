@@ -52,7 +52,7 @@ public class UnlockScreenActivity extends AppCompatActivity implements UnlockScr
     @Override
     public void onStart() {
         super.onStart();
-        if (this.timeout > 0) {
+        if (this.timeout > 0 && this.timer == null) {
               this.timer = new Timer();
               this.timer.schedule(new TimerTask() {
                 @Override
